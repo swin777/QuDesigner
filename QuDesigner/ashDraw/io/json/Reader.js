@@ -1,0 +1,48 @@
+define(["dojo/_base/declare", "ashDraw/io/Reader"], function(declare){
+	return declare("ashDraw.io.json.Reader", ashDraw.io.Reader, {
+		"-chains-": {
+	        constructor: "manual"
+	    },
+		constructor: function() {
+			this.inherited(arguments);
+	    },
+	    
+	    unmarshal: function(canvas, json){
+	        var node=null;
+	        var cnt = 0;
+	        var attrContent = canvas.attrContent;
+	        $.each(json, function(i, element){
+	        	cnt++;
+	            var o = eval("new "+element.type+"()");
+	            if(o instanceof ashDraw.Connection){
+	        		o.setTargetDecorator(new ashDraw.decoration.connection.ArrowDecorator());
+	        	}
+	            var source= null;
+	            var target=null;
+	            for(i in element){
+	                var val = element[i];
+	                if(i === "source"){
+	                    node = canvas.getFigure(val.node);
+	                    source = node.getPort(val.port);
+	                }
+	                else if (i === "target"){
+	                    node = canvas.getFigure(val.node);
+	                    target = node.getPort(val.port);
+	                }
+	            }
+	            if(source!==null && target!==null){
+	                o.setSource(source);
+	                o.setTarget(target);
+	            }
+	            o.setPersistentAttributes(element);
+	            canvas.addFigure(o);
+	            if(!attrContent[o.id]){
+	            	attrContent[o.id] = {};
+	            }
+	            if(json.length==cnt){
+	            	QuDesigner.app.eventbus.dispatch('unmarshalComplete', canvas);
+	            }
+	        });
+	    }
+	});
+});

@@ -1,0 +1,110 @@
+* {
+	outline: none !important;
+}
+
+/*
+body {
+	margin: 0;
+	padding: 2em;
+	font-family: Lucida Sans,Lucida Grande,Arial !important;
+	font-size: 13px !important;
+	background: white;
+	color: #333;
+}
+
+button {
+	-webkit-transition: background-color 0.2s linear;
+	border-radius:4px;
+	-moz-border-radius: 4px 4px 4px 4px;
+	-moz-box-shadow: 0 1px 1px rgba(0, 0, 0, 0.15);
+	background-color: #E4F2FF;
+	background-image: url("//ajax.googleapis.com/ajax/libs/dojo/1.7.4/dijit/themes/claro/form/images/button.png");
+	background-position: center top;
+	background-repeat: repeat-x;
+	border: 1px solid #769DC0;
+	padding: 2px 8px 4px;
+	font-size:1em;
+}
+
+button:hover {
+	background-color: #AFD9FF;
+	color: #000000;
+}
+
+h1 {
+	font-size:1.5em;
+}
+
+.break
+{
+	float:none;
+	clear:both;
+}
+
+
+html, body {
+    height: 100%;
+    margin: 0;
+    overflow: hidden;
+    padding: 0;
+}
+
+#appLayout {
+    height: 100%;
+}
+#leftCol {
+    width: 14em;
+}
+
+.claro .demoLayout .edgePanel {
+    background-color: #d0e9fc;
+}
+
+#viewsChart {
+	width: 550px;
+	height: 550px;
+}
+*/
+.canvas {
+	padding:0px;
+	margin:0px;
+	background : transparent url(../images/designer/grid_10.png);
+}
+
+.gridContainerZone {
+   vertical-align: top;
+ }
+ 
+.navigation {
+	padding:0px;
+	margin:0px;
+	text-align: center;
+}
+
+.palette_node_element {
+	color:black;
+	border:1px solid gray;
+	background-color: #f3f3f3;
+	padding:4px;
+	cursor:move;
+	width:60px;
+	margin: 10px 10px 10px 0px;
+	text-align:center;
+	align:center;
+	border-radius: 5px;
+	font-size: 12px !important;
+}
+
+.svg_palette_node_element {
+	cursor:move;
+	margin: 10px 5px 10px 5px;
+/*	zoom: 0.5;*/
+}
+
+.shadow {
+	-moz-box-shadow: 3px 3px 4px #000;
+	-webkit-box-shadow: 3px 3px 4px #000;
+	box-shadow: 3px 3px 4px #000;
+	-ms-filter: "progid:DXImageTransform.Microsoft.Shadow(Strength=4, Direction=135, Color='#000000')";
+	filter: progid:DXImageTransform.Microsoft.Shadow(Strength=4, Direction=135, Color='#000000');
+}
