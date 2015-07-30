@@ -95,6 +95,20 @@ define(["dojo/_base/declare",
 	    		return this.parent.designerView.selectedChildWidget.canvas;
 	    	},
 	    	
+	    	getChildById:function(obj, itemid){
+	    		if(!obj.getChildren){
+	    			return null;
+	    		}
+	    		var arr = obj.getChildren();
+	    		for(var i=0; i<arr.length; i++){
+	    			console.log(arr[i].itemid)
+	    			if(arr[i].itemid && arr[i].itemid==itemid){
+	    				return arr[i]
+	    			}
+	    		}
+	    		return null;
+	    	},
+	    	
 	    	eventbus:{
 	    		listeners:{},
 	    		
