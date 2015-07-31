@@ -7,14 +7,16 @@ define(["dojo/_base/declare",
         "dojo/store/Memory",
         "dojo/data/ItemFileWriteStore",
         "dijit/form/Button",
-        "app/right/MissionEdit"], function(declare, AccordionContainer, 
-        		ContentPane, DataGrid, cells, cellsDijit, Memory, ItemFileWriteStore, Button, MissionEdit){
+        "app/right/MissionEdit",
+        "app/right/QwestEdit"], function(declare, AccordionContainer, 
+        		ContentPane, DataGrid, cells, cellsDijit, Memory, ItemFileWriteStore, Button, MissionEdit, QwestEdit){
 	return declare("app.right.PropertyView", AccordionContainer, {
 		contentPane:null,
 		grid:null,
 		data:[],
 		figure:null,
 		missionEdit:null,
+		qwestEdit:null,
 		
 		constructor: function() {
 			var me = this;		
@@ -34,15 +36,17 @@ define(["dojo/_base/declare",
 			var myButton = new Button({
 		        label: "속성편집",
 		        onClick: function(evt){
-		        	if(me.figure.type!='ashDrawEx.shape.node.basic.Group'{
+		        	var attrs = me.figure.getPersistentAttributes();
+		        	if(attrs.type!='ashDrawEx.shape.node.basic.Group'){
 	        			if(!me.missionEdit){
 			        		me.missionEdit = new MissionEdit();
-			        		me.missionEdit.editStart(me.figure);
-			        	}else{
-			        		me.missionEdit.editStart(me.figure);
 			        	}
+	        			me.missionEdit.editStart(me.figure);
 		        	}else{
-		        		
+		        		if(!me.qwestEdit){
+			        		me.qwestEdit = new QwestEdit();
+			        	}
+	        			me.qwestEdit.editStart(me.figure);
 		        	}
 		        }
 		    })

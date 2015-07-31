@@ -101,7 +101,6 @@ define(["dojo/_base/declare",
 	    		}
 	    		var arr = obj.getChildren();
 	    		for(var i=0; i<arr.length; i++){
-	    			console.log(arr[i].itemid)
 	    			if(arr[i].itemid && arr[i].itemid==itemid){
 	    				return arr[i]
 	    			}

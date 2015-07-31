@@ -4,25 +4,25 @@ define(["dojo/_base/declare",
         "dijit/registry", 
         "dojo/parser", 
         "dijit/Dialog", 
-        "dijit/form/DateTextBox",
-        "dijit/form/SimpleTextarea",
-        "dojo/domReady!"], function(declare, TextBox, Button, registry, parser, Dialog, DateTextBox, SimpleTextarea){
-	return declare("app.right.MissionEdit", Dialog, {
+        "dojo/domReady!"], function(declare, TextBox, Button, registry, parser, Dialog){
+	return declare("app.right.QwestEdit", Dialog, {
 		figure:null,
 		
 		html:' <div class="dijitDialogPaneContentArea">' +
 			 '	<table>' +
 			 '		<tr>' +
-			 '			<td><label for="loc">미션명: </label></td>' +
-			 '			<td><input data-dojo-type="dijit/form/TextBox" type="text" name="name" itemid="name" style="width:320px"></td>' +
+			 '			<td><label for="loc">퀘스트명: </label></td>' +
+			 '			<td colspan="3"><input data-dojo-type="dijit/form/TextBox" type="text" name="name" itemid="name" style="width:320px"></td>' +
 			 '		</tr>' +
 			 '		<tr>' +
 			 '			<td><label for="loc">내용: </label></td>' +
-			 '			<td><textarea row="20" cols="40" name="desc" itemid="desc" data-dojo-type="dijit/form/SimpleTextarea" style="width:320px;height:120px"></textarea></td>'+
+			 '			<td colspan="3"><textarea row="20" cols="40" name="desc" itemid="desc" data-dojo-type="dijit/form/SimpleTextarea" style="width:320px;height:120px"></textarea></td>' +
 			 '		</tr>' +
 			 '		<tr>' +
-			 '			<td><label for="loc">URL: </label></td>' +
-			 '			<td><input data-dojo-type="dijit/form/TextBox" type="text" name="url" itemid="url" style="width:320px"></td>' +
+			 '			<td><label for="loc">시작일: </label></td>' +
+			 '			<td><input data-dojo-type="dijit/form/DateTextBox" data-dojo-props="placeHolder:\'StartDate\'" type="text" name="stateDate" itemid="stateDate" style="width:130px"></td>' +
+			 '			<td><label for="loc">&nbsp;&nbsp;&nbsp;종료일: </label></td>' +
+			 '			<td><input data-dojo-type="dijit/form/DateTextBox" data-dojo-props="placeHolder:\'EndDate\'" type="text" name="endDate" itemid="endDate" style="width:130px"></td>' +
 			 '		</tr>' +
 			 '	</table>' +
 			 ' </div>' +
@@ -43,7 +43,7 @@ define(["dojo/_base/declare",
 			QuDesigner.app.getChildById(me, 'save').onClick = function(evt){
 				var quCanvas = QuDesigner.app.currentCanvas();
 				var metaInfo = quCanvas.attrContent[me.figure.id];
-				metaInfo._type_ = 'mission';
+				metaInfo._type_ = 'qwest';
 				var arr = me.getChildren();
 	    		for(var i=0; i<arr.length; i++){
 	    			if(!arr[i].nodata){
