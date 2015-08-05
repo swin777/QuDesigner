@@ -1,4 +1,4 @@
-define(["dojo/_base/declare", "ashDraw/io/Reader"], function(declare){
+define(["dojo/_base/declare", "ashDraw/io/Reader", "ashDraw/util/UUID"], function(declare){
 	return declare("ashDraw.io.json.Reader", ashDraw.io.Reader, {
 		"-chains-": {
 	        constructor: "manual"
@@ -38,6 +38,9 @@ define(["dojo/_base/declare", "ashDraw/io/Reader"], function(declare){
 	            canvas.addFigure(o);
 	            if(!attrContent[o.id]){
 	            	attrContent[o.id] = {};
+	            }
+	            if(!attrContent.actInfo){
+	            	attrContent.actInfo = {key:ashDraw.util.UUID.create()};
 	            }
 	            if(json.length==cnt){
 	            	QuDesigner.app.eventbus.dispatch('unmarshalComplete', canvas);

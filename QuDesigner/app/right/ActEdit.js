@@ -5,8 +5,7 @@ define(["dojo/_base/declare",
         "dojo/parser", 
         "dijit/Dialog", 
         "dojo/domReady!"], function(declare, TextBox, Button, registry, parser, Dialog){
-	return declare("app.right.QwestEdit", Dialog, {
-		figure:null,
+	return declare("app.right.ActEdit", Dialog, {
 		
 		html:' <div class="dijitDialogPaneContentArea">' +
 			 '	<table>' +
@@ -18,6 +17,12 @@ define(["dojo/_base/declare",
 			 '			<td><label for="loc">내용: </label></td>' +
 			 '			<td colspan="3"><textarea row="20" cols="40" name="desc" itemid="desc" data-dojo-type="dijit/form/SimpleTextarea" style="width:320px;height:120px"></textarea></td>' +
 			 '		</tr>' +
+			 '		<tr>' +
+			 '			<td><label for="loc">시작일: </label></td>' +
+			 '			<td><input data-dojo-type="dijit/form/DateTextBox" data-dojo-props="placeHolder:\'StartDate\'" type="text" name="stateDate" itemid="stateDate" constraints="{datePattern:\'yyyy-MM-dd\', strict:true}" style="width:130px"></td>' +
+			 '			<td><label for="loc">&nbsp;&nbsp;&nbsp;종료일: </label></td>' +
+			 '			<td><input data-dojo-type="dijit/form/DateTextBox" data-dojo-props="placeHolder:\'EndDate\'" type="text" name="endDate" itemid="endDate" constraints="{datePattern:\'yyyy-MM-dd\', strict:true}" style="width:130px"></td>' +
+			 '		</tr>' +
 			 '	</table>' +
 			 ' </div>' +
 			 ' <div class="dijitDialogPaneActionBar">' +
@@ -27,7 +32,7 @@ define(["dojo/_base/declare",
 			
 		constructor: function() {
 			var me = this;		
-			me.title = 'Qwest 편집';
+			me.title = 'Act 편집';
 			me.style = "width:400px"
 			me.content = me.html;
 		},
@@ -36,11 +41,16 @@ define(["dojo/_base/declare",
 			var me = this;	
 			QuDesigner.app.getChildById(me, 'save').onClick = function(evt){
 				var quCanvas = QuDesigner.app.currentCanvas();
-				var metaInfo = quCanvas.attrContent[me.figure.id];
+				var metaInfo = quCanvas.attrContent.actInfo;
+				metaInfo._type_ = 'act';
 				var arr = me.getChildren();
 	    		for(var i=0; i<arr.length; i++){
 	    			if(!arr[i].nodata){
-	    				metaInfo[arr[i].itemid] = arr[i].getValue();
+	    				if(arr[i].getValue() instanceof Date){
+	    					metaInfo[arr[i].itemid] = me.yyyymmdd(arr[i].getValue());
+	    				}else{
+	    					metaInfo[arr[i].itemid] = arr[i].getValue();
+	    				}
 	    			}
 	    		}
 				me.hide();
@@ -50,24 +60,16 @@ define(["dojo/_base/declare",
 	        }
 		},
 		
-		editStart:function(figure){
+		editStart:function(){
 			var me = this;	
-			if(figure){
-				me.figure = figure;
-				me.show();
-				var quCanvas = QuDesigner.app.currentCanvas();
-				var metaInfo = quCanvas.attrContent[me.figure.id]
-				var arr = me.getChildren();
-	    		for(var i=0; i<arr.length; i++){
-	    			if(!arr[i].nodata){
-	    				if(metaInfo[arr[i].itemid]){
-	    					arr[i].setValue(metaInfo[arr[i].itemid]);
-	    				}else{
-	    					arr[i].setValue(null);
-	    				}
-	    			}
-	    		}
-			}
+			me.show();
+		},
+		
+		yyyymmdd:function(date) {
+			var yyyy = date.getFullYear().toString();
+			var mm = (date.getMonth()+1).toString(); // getMonth() is zero-based
+			var dd  = date.getDate().toString();
+			return yyyy + "-" + (mm[1]?mm:"0"+mm[0]) + "-" + (dd[1]?dd:"0"+dd[0]); // padding
 		}
 	});
 });

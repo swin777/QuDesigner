@@ -13,7 +13,7 @@ define(["dojo/_base/declare",
 		html:' <div class="dijitDialogPaneContentArea">' +
 			 '	<table>' +
 			 '		<tr>' +
-			 '			<td><label for="loc">미션명: </label></td>' +
+			 '			<td><label for="loc">이름: </label></td>' +
 			 '			<td><input data-dojo-type="dijit/form/TextBox" type="text" name="name" itemid="name" style="width:320px"></td>' +
 			 '		</tr>' +
 			 '		<tr>' +
@@ -33,7 +33,7 @@ define(["dojo/_base/declare",
 			
 		constructor: function() {
 			var me = this;		
-			me.title = '속성편집';
+			me.title = 'Misstion 편집';
 			me.style = "width:400px"
 			me.content = me.html;
 		},
@@ -43,7 +43,6 @@ define(["dojo/_base/declare",
 			QuDesigner.app.getChildById(me, 'save').onClick = function(evt){
 				var quCanvas = QuDesigner.app.currentCanvas();
 				var metaInfo = quCanvas.attrContent[me.figure.id];
-				metaInfo._type_ = 'mission';
 				var arr = me.getChildren();
 	    		for(var i=0; i<arr.length; i++){
 	    			if(!arr[i].nodata){
@@ -74,8 +73,6 @@ define(["dojo/_base/declare",
 	    				}
 	    			}
 	    		}
-			}else{
-				
 			}
 		}
 	});

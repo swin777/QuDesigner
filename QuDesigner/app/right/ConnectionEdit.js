@@ -5,7 +5,7 @@ define(["dojo/_base/declare",
         "dojo/parser", 
         "dijit/Dialog", 
         "dojo/domReady!"], function(declare, TextBox, Button, registry, parser, Dialog){
-	return declare("app.right.QwestEdit", Dialog, {
+	return declare("app.right.ConnectionEdit", Dialog, {
 		figure:null,
 		
 		html:' <div class="dijitDialogPaneContentArea">' +
@@ -18,6 +18,10 @@ define(["dojo/_base/declare",
 			 '			<td><label for="loc">내용: </label></td>' +
 			 '			<td colspan="3"><textarea row="20" cols="40" name="desc" itemid="desc" data-dojo-type="dijit/form/SimpleTextarea" style="width:320px;height:120px"></textarea></td>' +
 			 '		</tr>' +
+			 '		<tr>' +
+			 '			<td><label for="loc">콘테츠Key: </label></td>' +
+			 '			<td><input data-dojo-type="dijit/form/TextBox" type="text" name="url" itemid="url" style="width:320px"></td>' +
+			 '		</tr>' +
 			 '	</table>' +
 			 ' </div>' +
 			 ' <div class="dijitDialogPaneActionBar">' +
@@ -27,7 +31,7 @@ define(["dojo/_base/declare",
 			
 		constructor: function() {
 			var me = this;		
-			me.title = 'Qwest 편집';
+			me.title = 'Connection 편집';
 			me.style = "width:400px"
 			me.content = me.html;
 		},

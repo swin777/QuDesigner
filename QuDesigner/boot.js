@@ -25,7 +25,6 @@ dojoConfig = {
 				require(dojoConfig, [
 									"app/application",
 			                     ], function(application){
-						
 						require(dojoConfig, ["dbootstrap"], function(dbootstrap){
 							window.QuDesigner = new application('mainArea');
 							window.QuDesigner.makeLayout();

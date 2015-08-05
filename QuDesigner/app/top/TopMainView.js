@@ -40,9 +40,22 @@ define(["dojo/_base/declare",
 		    		if(quCanvas){
 		    			var writer = new Writer();
 		    			var content = json.stringify(writer.marshal(quCanvas), null, 2);
-		    			alert(content);
-		    			alert(quCanvas.attrContent)
+		    			//alert(content);
+		    			//alert(quCanvas.attrContent)
+		    			
+		    			dojo.xhr.post({
+			        		url: "save.jsp",
+			        		handleAs: "json",
+			        		content: {
+			        			content: content,
+			        			attrContent: quCanvas.attrContent
+			        		},
+			        		load: function(result) {
+			        			
+			        		}
+		    			})
 		    		}	
+		        	
 		        }
 		    }));
 			

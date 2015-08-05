@@ -8,8 +8,11 @@ define(["dojo/_base/declare",
         "dojo/data/ItemFileWriteStore",
         "dijit/form/Button",
         "app/right/MissionEdit",
-        "app/right/QwestEdit"], function(declare, AccordionContainer, 
-        		ContentPane, DataGrid, cells, cellsDijit, Memory, ItemFileWriteStore, Button, MissionEdit, QwestEdit){
+        "app/right/QwestEdit",
+        "app/right/ActEdit",
+        "app/right/ConnectionEdit",
+        "ashDraw/util/UUID"], function(declare, AccordionContainer, 
+        		ContentPane, DataGrid, cells, cellsDijit, Memory, ItemFileWriteStore, Button, MissionEdit, QwestEdit, ActEdit, ConnectionEdit){
 	return declare("app.right.PropertyView", AccordionContainer, {
 		contentPane:null,
 		grid:null,
@@ -17,6 +20,8 @@ define(["dojo/_base/declare",
 		figure:null,
 		missionEdit:null,
 		qwestEdit:null,
+		actEdit:null,
+		connectionEdit:null,
 		
 		constructor: function() {
 			var me = this;		
@@ -24,6 +29,12 @@ define(["dojo/_base/declare",
 			QuDesigner.app.eventbus.addEventListener('addcanvas', function(quCanvas) {
 				quCanvas.addSelectionListener(this);
 				quCanvas.getCommandStack().addEventListener(this);
+				if(!quCanvas.attrContent){
+					quCanvas.attrContent = {};
+				}
+				if(!quCanvas.attrContent.actInfo){
+					quCanvas.attrContent.actInfo = {key:ashDraw.util.UUID.create()};
+				}
 			}, this);
 		},
 		
@@ -36,17 +47,29 @@ define(["dojo/_base/declare",
 			var myButton = new Button({
 		        label: "속성편집",
 		        onClick: function(evt){
-		        	var attrs = me.figure.getPersistentAttributes();
-		        	if(attrs.type!='ashDrawEx.shape.node.basic.Group'){
-	        			if(!me.missionEdit){
-			        		me.missionEdit = new MissionEdit();
+		        	if(me.figure){
+		        		var attrs = me.figure.getPersistentAttributes();
+		        		if(attrs.type=='ashDrawEx.shape.node.basic.Group'){
+		        			if(!me.qwestEdit){
+				        		me.qwestEdit = new QwestEdit();
+				        	}
+		        			me.qwestEdit.editStart(me.figure);
+			        	}else if(attrs.type=='ashDraw.Connection'){
+			        		if(!me.connectionEdit){
+				        		me.connectionEdit = new ConnectionEdit();
+				        	}
+		        			me.connectionEdit.editStart(me.figure);
+			        	}else{
+			        		if(!me.missionEdit){
+				        		me.missionEdit = new MissionEdit();
+				        	}
+		        			me.missionEdit.editStart(me.figure);
 			        	}
-	        			me.missionEdit.editStart(me.figure);
 		        	}else{
-		        		if(!me.qwestEdit){
-			        		me.qwestEdit = new QwestEdit();
+		        		if(!me.actEdit){
+			        		me.actEdit = new ActEdit();
 			        	}
-	        			me.qwestEdit.editStart(me.figure);
+		        		me.actEdit.editStart();
 		        	}
 		        }
 		    })
@@ -111,6 +134,32 @@ define(["dojo/_base/declare",
 			if(event.isPreChangeEvent())
 				return;
 			var figure = event.command.figure;
+			var connection = event.command.connection;
+			
+			var obj = null;
+			if(figure){
+				obj = figure;
+			}else if(!figure && connection){
+				obj = connection;
+			}
+			
+			if(obj && event.command.canvas && event.command.canvas.attrContent && !event.command.canvas.attrContent[obj.id]){
+				event.command.canvas.attrContent[obj.id] = {};
+				if(obj instanceof ashDrawEx.shape.node.basic.Group){
+					event.command.canvas.attrContent[obj.id]['_type_'] = 'qwest';
+				}else if(obj instanceof ashDraw.Connection){
+					event.command.canvas.attrContent[obj.id]['_type_'] = 'connect';
+					if(obj.sourcePort.parent instanceof ashDrawEx.shape.node.basic.Group){
+						event.command.canvas.attrContent[obj.id]['_type_'] = 'qwestConnect';
+					}else{
+						event.command.canvas.attrContent[obj.id]['_type_'] = 'missionConnect';
+					}
+					event.command.canvas.attrContent[obj.id]['source'] = obj.sourcePort.parent.id;
+					event.command.canvas.attrContent[obj.id]['target'] = obj.targetPort.parent.id;
+				}else{
+					event.command.canvas.attrContent[obj.id]['_type_'] = 'mission';
+				}
+			}
 			if(typeof figureArr == 'undefined') {
 				if(figure === null || typeof figure == "undefined") {
 					me.gridReload(null);
