@@ -49,6 +49,11 @@ define(["dojo/_base/declare",
 	    				metaInfo[arr[i].itemid] = arr[i].getValue();
 	    			}
 	    		}
+	    		if(metaInfo.name){
+	    			var command = new ashDraw.command.CommandReLabel(me.figure);
+					command.setLabel(metaInfo.name);
+					quCanvas.getCommandStack().execute(command);
+	    		}
 				me.hide();
 	        }
 			QuDesigner.app.getChildById(me, 'cancel').onClick = function(evt){

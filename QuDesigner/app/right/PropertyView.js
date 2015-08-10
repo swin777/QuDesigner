@@ -75,8 +75,6 @@ define(["dojo/_base/declare",
 		    })
 			me.contentPane.addChild(myButton);
 			
-			
-			
 			var gridLayout = [{
 				defaultCell: { width: 8, editable: true, type: cells._Widget, styles: 'text-align: right;'},
 				cells: [
@@ -195,6 +193,9 @@ define(["dojo/_base/declare",
 			}
 			if(attrs){
 				for(var member in attrs){
+					if(member=='label' || member=='gLabel'){
+						continue;
+					}
 					var value = '';
 					if(attrs[member]){
 						value = attrs[member];
@@ -203,7 +204,7 @@ define(["dojo/_base/declare",
 				}
 				me.grid.store.newItem({name:'', value:''});
 				me.grid.store.newItem({name:'', value:''});
-				me.grid.store.newItem({name:'', value:''});
+				//me.grid.store.newItem({name:'', value:''});
 			}
 		}
 	});

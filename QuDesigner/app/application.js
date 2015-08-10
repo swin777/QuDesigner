@@ -9,7 +9,7 @@ define(["dojo/_base/declare",
         "app/right/PropertyView",
         "dojo/domReady!"], function(declare, BorderContainer, ContentPane, AshExpandoPane,
         		TopMainView, DesignerView, PalleteView, OutlineView, PropertyView){
-	return declare("app.application", null, {
+	var application =  declare("app.application", null, {
 		divId:null,
 		topMainView:null,
 		palleteView:null,
@@ -199,4 +199,13 @@ define(["dojo/_base/declare",
 	    	}
 	    }
 	});
+	var meUrl = 'http://' + window.location.hostname + ':' + window.location.port + '/'
+	var proxy = meUrl + 'was/proxy.jsp';
+	var nodeUrl = 'http://' + window.location.hostname + ':3000'
+	application.config = {
+			meUrl:meUrl,
+			proxy:proxy,
+			businessServer:proxy +'?'+ nodeUrl
+	}
+	return application;
 });
