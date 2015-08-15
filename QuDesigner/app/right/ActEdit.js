@@ -11,17 +11,17 @@ define(["dojo/_base/declare",
 			 '	<table>' +
 			 '		<tr>' +
 			 '			<td><label for="loc">이름: </label></td>' +
-			 '			<td colspan="3"><input data-dojo-type="dijit/form/TextBox" type="text" name="name" itemid="name" style="width:320px"></td>' +
+			 '			<td colspan="3"><input data-dojo-type="dijit/form/TextBox" type="text" name="TITLE" itemid="TITLE" style="width:320px"></td>' +
 			 '		</tr>' +
 			 '		<tr>' +
 			 '			<td><label for="loc">내용: </label></td>' +
-			 '			<td colspan="3"><textarea row="20" cols="40" name="desc" itemid="desc" data-dojo-type="dijit/form/SimpleTextarea" style="width:320px;height:120px"></textarea></td>' +
+			 '			<td colspan="3"><textarea row="20" cols="40" name="DESCRIPTION" itemid="DESCRIPTION" data-dojo-type="dijit/form/SimpleTextarea" style="width:320px;height:120px"></textarea></td>' +
 			 '		</tr>' +
 			 '		<tr>' +
 			 '			<td><label for="loc">시작일: </label></td>' +
-			 '			<td><input data-dojo-type="dijit/form/DateTextBox" data-dojo-props="placeHolder:\'StartDate\'" type="text" name="stateDate" itemid="stateDate" constraints="{datePattern:\'yyyy-MM-dd\', strict:true}" style="width:130px"></td>' +
+			 '			<td><input data-dojo-type="dijit/form/DateTextBox" data-dojo-props="placeHolder:\'StartDate\'" type="text" name="STARTDATE" itemid="STARTDATE" constraints="{datePattern:\'yyyy-MM-dd\', strict:true}" style="width:130px"></td>' +
 			 '			<td><label for="loc">&nbsp;&nbsp;&nbsp;종료일: </label></td>' +
-			 '			<td><input data-dojo-type="dijit/form/DateTextBox" data-dojo-props="placeHolder:\'EndDate\'" type="text" name="endDate" itemid="endDate" constraints="{datePattern:\'yyyy-MM-dd\', strict:true}" style="width:130px"></td>' +
+			 '			<td><input data-dojo-type="dijit/form/DateTextBox" data-dojo-props="placeHolder:\'EndDate\'" type="text" name="ENDDATE" itemid="ENDDATE" constraints="{datePattern:\'yyyy-MM-dd\', strict:true}" style="width:130px"></td>' +
 			 '		</tr>' +
 			 '	</table>' +
 			 ' </div>' +
@@ -53,6 +53,7 @@ define(["dojo/_base/declare",
 	    				}
 	    			}
 	    		}
+	    		QuDesigner.app.currentTab().set('title', metaInfo.TITLE);
 				me.hide();
 	        }
 			QuDesigner.app.getChildById(me, 'cancel').onClick = function(evt){

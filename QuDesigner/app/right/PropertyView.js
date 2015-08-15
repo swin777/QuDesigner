@@ -33,7 +33,7 @@ define(["dojo/_base/declare",
 					quCanvas.attrContent = {};
 				}
 				if(!quCanvas.attrContent.actInfo){
-					quCanvas.attrContent.actInfo = {key:ashDraw.util.UUID.create()};
+					quCanvas.attrContent.actInfo = {QUESTACTID:ashDraw.util.UUID.create()};
 				}
 			}, this);
 		},
@@ -174,6 +174,7 @@ define(["dojo/_base/declare",
 			if(typeof figureArr == 'undefined') {
 				if(figure === null || typeof figure == "undefined") {
 					me.gridReload(null);
+					me.figure = null;
 				} else {
 					var attrs = figure.getPersistentAttributes();
 					me.gridReload(attrs);

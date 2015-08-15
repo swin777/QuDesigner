@@ -26,17 +26,21 @@ define(["dojo/_base/declare",
 		
 		initPallate:function(){
 			var me = this;	
-			me.TableContainer.addChild(new NotationNode({id :'basic_start', name : 'Start', cls_name : 'ashDraw.shape.node.Start', node_type : 'Node'}));
-			me.TableContainer.addChild(new NotationNode({id :'basic_end', name : 'End', cls_name : 'ashDraw.shape.node.End', node_type : 'Node'}));
-			me.TableContainer.addChild(new NotationNode({id :'basic_rectangle', name : 'Rectangle', cls_name : 'ashDrawEx.shape.node.basic.Rectangle', node_type : 'Node'}));
+//			me.TableContainer.addChild(new NotationNode({id :'basic_start', name : 'Start', cls_name : 'ashDraw.shape.node.Start', node_type : 'Node'}));
+//			me.TableContainer.addChild(new NotationNode({id :'basic_end', name : 'End', cls_name : 'ashDraw.shape.node.End', node_type : 'Node'}));
+//			me.TableContainer.addChild(new NotationNode({id :'basic_rectangle', name : 'Rectangle', cls_name : 'ashDrawEx.shape.node.basic.Rectangle', node_type : 'Node'}));
+//			
+//			me.TableContainer.addChild(new NotationNode({id :'basic_circle', name : 'Circle', cls_name : 'ashDrawEx.shape.node.basic.Circle', node_type : 'Node'}));
+//			me.TableContainer.addChild(new NotationNode({id :'basic_oval', name : 'Oval', cls_name : 'ashDrawEx.shape.node.basic.Oval', node_type : 'Node'}));
+//			me.TableContainer.addChild(new NotationNode({id :'basic_diamond', name : 'Diamond', cls_name : 'ashDrawEx.shape.node.basic.Diamond', node_type : 'Node'}));
+//			
+//			me.TableContainer.addChild(new NotationNode({id :'basic_label', name : 'Label', cls_name : 'ashDrawEx.shape.node.basic.Label', node_type : 'Node'}));
+//			me.TableContainer.addChild(new NotationNode({id :'basic_image', name : 'Image', cls_name : 'ashDrawEx.shape.node.basic.Image', node_type : 'Node'}));
+//			me.TableContainer.addChild(new NotationNode({id :'basic_group', name : 'Group', cls_name : 'ashDrawEx.shape.node.basic.Group', node_type : 'Node'}));
 			
-			me.TableContainer.addChild(new NotationNode({id :'basic_circle', name : 'Circle', cls_name : 'ashDrawEx.shape.node.basic.Circle', node_type : 'Node'}));
-			me.TableContainer.addChild(new NotationNode({id :'basic_oval', name : 'Oval', cls_name : 'ashDrawEx.shape.node.basic.Oval', node_type : 'Node'}));
-			me.TableContainer.addChild(new NotationNode({id :'basic_diamond', name : 'Diamond', cls_name : 'ashDrawEx.shape.node.basic.Diamond', node_type : 'Node'}));
-			
-			me.TableContainer.addChild(new NotationNode({id :'basic_label', name : 'Label', cls_name : 'ashDrawEx.shape.node.basic.Label', node_type : 'Node'}));
 			me.TableContainer.addChild(new NotationNode({id :'basic_image', name : 'Image', cls_name : 'ashDrawEx.shape.node.basic.Image', node_type : 'Node'}));
-			me.TableContainer.addChild(new NotationNode({id :'basic_group', name : 'Group', cls_name : 'ashDrawEx.shape.node.basic.Group', node_type : 'Node'}));
+			me.TableContainer.addChild(new NotationNode({id :'basic_rectangle', name : '미션', cls_name : 'ashDrawEx.shape.node.basic.Rectangle', node_type : 'Node'}));
+			me.TableContainer.addChild(new NotationNode({id :'basic_group', name : '퀘스트', cls_name : 'ashDrawEx.shape.node.basic.Group', node_type : 'Node'}));
 		}
 	});
 });

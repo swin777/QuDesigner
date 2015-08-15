@@ -95,6 +95,14 @@ define(["dojo/_base/declare",
 	    		return this.parent.designerView.selectedChildWidget.canvas;
 	    	},
 	    	
+	    	currentTab:function(){
+	    		return this.parent.designerView.selectedChildWidget;
+	    	},
+	    	
+	    	currentTabContainer:function(){
+	    		return this.parent.designerView;
+	    	},
+	    	
 	    	getChildById:function(obj, itemid){
 	    		if(!obj.getChildren){
 	    			return null;

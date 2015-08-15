@@ -67,7 +67,8 @@ define(["dojo/_base/declare",
 				me.figure = figure;
 				me.show();
 				var quCanvas = QuDesigner.app.currentCanvas();
-				var metaInfo = quCanvas.attrContent[me.figure.id]
+				var metaInfo = quCanvas.attrContent[me.figure.id];
+				metaInfo['QUESTID'] = me.figure.gId;
 				var arr = me.getChildren();
 	    		for(var i=0; i<arr.length; i++){
 	    			if(!arr[i].nodata){
