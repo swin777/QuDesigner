@@ -159,46 +159,50 @@ define(["dojo/_base/declare",
 	    
 	    onDragEnd:function()
 	    {
-	      this.canvas.setSnapToGrid(this.originalSnapToGrid );
-	      this.canvas.setSnapToGeometry( this.originalSnapToGeometry );
-	     
-	      this.setAlpha(1.0);
-	    
-	      var dropObj = this.canvas.getBestFigure(this.x, this.y, this);
-	      if(dropObj===null || dropObj instanceof ashDrawEx.shape.node.basic.Group){ //빈곳에 drop한 경우에만 노드를 생성한다.
-	      	var newFigrue = this.canvas.addFigrueTypeCommand(this.figure.NAME, this.x, this.y, this.figure);
-	      	var figruePortArr = this.figure.getPorts();
-	      	var newfigruePortArr = newFigrue.getPorts();
-	      	var selectPortInfo = null;
-	      	for(var i=0; i<figruePortArr.getSize(); i++){
-	      		for(var k=0; k<newfigruePortArr.getSize(); k++){
-	      			var currPortInfo = new Object();
-	      			currPortInfo.startPort = figruePortArr.get(i);
-	      			currPortInfo.endPort = newfigruePortArr.get(k);
-	      			this.pointToPointDistance(currPortInfo);
-	      			if(selectPortInfo===null){
-	      				selectPortInfo = currPortInfo;
-	      			}else{
-	      				if(currPortInfo.distance < selectPortInfo.distance){
-	      					selectPortInfo = currPortInfo;
-	      				}
-	      			}
-	      		}
-	      	}
-	      	
-	      	var conn = new ashDraw.Connection(this.canvas.connectType);
-	      	//conn.setSourceDecorator(new ashDraw.decoration.connection.BarDecorator());
+			this.canvas.setSnapToGrid(this.originalSnapToGrid );
+			this.canvas.setSnapToGeometry( this.originalSnapToGeometry );
+			 
+			this.setAlpha(1.0);
+			
+			var dropObj = this.canvas.getBestFigure(this.x, this.y, this);
+			if(dropObj===null || dropObj instanceof ashDrawEx.shape.node.basic.Group){ //빈곳에 drop한 경우에만 노드를 생성한다.
+				var newFigrue = this.canvas.addFigrueTypeCommand(this.figure.NAME, this.x, this.y, this.figure);
+			}else{
+				var newFigrue = dropObj;
+			}
+	      
+		    
+			var figruePortArr = this.figure.getPorts();
+			var newfigruePortArr = newFigrue.getPorts();
+			var selectPortInfo = null;
+			for(var i=0; i<figruePortArr.getSize(); i++){
+				for(var k=0; k<newfigruePortArr.getSize(); k++){
+					var currPortInfo = new Object();
+					currPortInfo.startPort = figruePortArr.get(i);
+					currPortInfo.endPort = newfigruePortArr.get(k);
+					this.pointToPointDistance(currPortInfo);
+					if(selectPortInfo===null){
+						selectPortInfo = currPortInfo;
+					}else{
+						if(currPortInfo.distance < selectPortInfo.distance){
+							selectPortInfo = currPortInfo;
+						}
+					}
+				}
+			}
+			
+			var conn = new ashDraw.Connection(this.canvas.connectType);
+			//conn.setSourceDecorator(new ashDraw.decoration.connection.BarDecorator());
 			conn.setTargetDecorator(new ashDraw.decoration.connection.ArrowDecorator());
-	   	 	conn.setSource(selectPortInfo.startPort);
-	   	 	conn.setTarget(selectPortInfo.endPort);
-	   	 	this.canvas.addFigrueCommand(conn);
-	      }
+			conn.setSource(selectPortInfo.startPort);
+			conn.setTarget(selectPortInfo.endPort);
+			this.canvas.addFigrueCommand(conn);
 	      
-	      this.setPosition(this.ox,this.oy);
+	        this.setPosition(this.ox,this.oy);
 	    
-	      this.canvas.hideConnectionLine();
+	        this.canvas.hideConnectionLine();
 	      
-	      this.canvas.setCurrentSelection(null);
+	        this.canvas.setCurrentSelection(null);
 	      //this.currentTarget = null;
 	      //this.canvas.mouseActClear();
 	    },

@@ -17,7 +17,7 @@ define(["dojo/_base/declare",
 		
 		startup:function(){
 			var me = this;
-			$('#'+me.domNode.id).append('<span class="brand">QuriousPlayer Desinger</span>');
+			$('#'+me.domNode.id).append('<span class="brand">QuriousPlayer Modeler</span>');
 			
 			me.addChild(new MenuBarItem({
 		        label: "New",
