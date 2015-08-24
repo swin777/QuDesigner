@@ -156,6 +156,7 @@ define(["dojo/_base/declare",
 					event.command.canvas.attrContent[obj.id]['target'] = obj.targetPort.parent.id;
 				}else{
 					event.command.canvas.attrContent[obj.id]['_type_'] = 'mission';
+					event.command.canvas.attrContent[obj.id]['QUESTID'] = obj.gId;
 				}
 			}
 			if(typeof figureArr == 'undefined') {
