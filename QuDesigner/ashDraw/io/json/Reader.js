@@ -7,10 +7,27 @@ define(["dojo/_base/declare", "ashDraw/io/Reader", "ashDraw/util/UUID"], functio
 			this.inherited(arguments);
 	    },
 	    
-	    unmarshal: function(canvas, json){
+	    unmarshal: function(canvas, orgJson){
 	        var node=null;
 	        var cnt = 0;
 	        var attrContent = canvas.attrContent;
+	        var groupArr = [];
+	        var notGroupArr = [];
+	        for(var i=0; i<orgJson.length; i++){
+	        	var obj = orgJson[i];
+	        	if(obj.gLabel){
+	        		groupArr.push(obj);
+	        	}else{
+	        		notGroupArr.push(obj);
+	        	}
+	        }
+	        var json = [];
+	        for(var i=0; i<groupArr.length; i++){
+	        	json.push(groupArr[i]);
+	        }
+	        for(var i=0; i<notGroupArr.length; i++){
+	        	json.push(notGroupArr[i]);
+	        }
 	        $.each(json, function(i, element){
 	        	cnt++;
 	            var o = eval("new "+element.type+"()");
