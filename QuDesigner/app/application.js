@@ -87,8 +87,8 @@ define(["dojo/_base/declare",
 	    		this.parent.designerView.addCanvas();
 	    	},
 	    	
-	    	openCanvas:function(info){
-	    		this.parent.designerView.openCanvas(info);
+	    	openCanvas:function(info, actId){
+	    		this.parent.designerView.openCanvas(info, actId);
 	    	},
 	    	
 	    	currentCanvas:function(){

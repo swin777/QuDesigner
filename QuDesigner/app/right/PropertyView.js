@@ -163,8 +163,23 @@ define(["dojo/_base/declare",
 				if(figure === null || typeof figure == "undefined") {
 					me.gridReload(null);
 				} else {
+					var totalAttrs = [];
+					var quCanvas = QuDesigner.app.currentCanvas();
+					var metaInfo = quCanvas.attrContent[figure.id];
 					var attrs = figure.getPersistentAttributes();
-					me.gridReload(attrs);
+					
+					for(var member in metaInfo){
+						if(member!='_type_'){
+							totalAttrs[member] = metaInfo[member];
+						}
+					}
+					for(var member in attrs){
+						if(member!='type'){
+							totalAttrs[member] = attrs[member];
+						}
+					}
+					
+					me.gridReload(totalAttrs);
 					me.figure = figure;
 				}
 			}
@@ -177,8 +192,19 @@ define(["dojo/_base/declare",
 					me.gridReload(null);
 					me.figure = null;
 				} else {
+					var totalAttrs = [];
+					var quCanvas = QuDesigner.app.currentCanvas();
+					var metaInfo = quCanvas.attrContent[figure.id];
 					var attrs = figure.getPersistentAttributes();
-					me.gridReload(attrs);
+					
+					for(var member in metaInfo){
+						totalAttrs[member] = metaInfo[member];
+					}
+					for(var member in attrs){
+						totalAttrs[member] = attrs[member];
+					}
+					
+					me.gridReload(totalAttrs);
 					me.figure = figure;
 				}
 			}
@@ -204,9 +230,9 @@ define(["dojo/_base/declare",
 					}
 					me.grid.store.newItem({name:member, value:value});
 				}
-				me.grid.store.newItem({name:'', value:''});
-				me.grid.store.newItem({name:'', value:''});
-				//me.grid.store.newItem({name:'', value:''});
+				for(var i=0; i<4; i++){
+					me.grid.store.newItem({name:'', value:''});
+				}
 			}
 		}
 	});

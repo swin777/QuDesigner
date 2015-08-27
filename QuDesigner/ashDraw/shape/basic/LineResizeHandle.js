@@ -12,6 +12,7 @@ define(["dojo/_base/declare",
 	    
 	    constructor: function(type) {
 	    	this.inherited(arguments);
+	    	this.draggable = true;
 	        if (ashDraw.isTouchDevice) {
 	            this.setDimension(20, 20);
 	        } else {
@@ -48,11 +49,12 @@ define(["dojo/_base/declare",
 	        this.inherited(arguments, [attributes]);
 	    },
 
-	    onDragStart: function() {
+	    onDragStart: function(x, y) {
 	        this.ox = this.x;
 	        this.oy = this.y;
 
-	        this.command = this.getCanvas().getCurrentSelection().createCommand(new ashDraw.command.CommandType(ashDraw.command.CommandType.MOVE_BASEPOINT));
+	        //this.command = this.getCanvas().getCurrentSelection().createCommand(new ashDraw.command.CommandType(ashDraw.command.CommandType.MOVE_BASEPOINT));
+	        this.command = this.createCommand(new ashDraw.command.CommandType(ashDraw.command.CommandType.MOVE_BASEPOINT));
 
 	        return true;
 	    },

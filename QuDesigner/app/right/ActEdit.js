@@ -64,6 +64,18 @@ define(["dojo/_base/declare",
 		editStart:function(){
 			var me = this;	
 			me.show();
+			var quCanvas = QuDesigner.app.currentCanvas();
+			var metaInfo = quCanvas.attrContent['actInfo'];
+			var arr = me.getChildren();
+    		for(var i=0; i<arr.length; i++){
+    			if(!arr[i].nodata){
+    				if(metaInfo[arr[i].itemid]){
+    					arr[i].setValue(metaInfo[arr[i].itemid]);
+    				}else{
+    					arr[i].setValue(null);
+    				}
+    			}
+    		}
 		},
 		
 		yyyymmdd:function(date) {

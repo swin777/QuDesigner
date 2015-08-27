@@ -24,8 +24,16 @@ define(["dojo/_base/declare",
 			
 		},
 		
-		openCanvas:function(info){
+		openCanvas:function(info, actId){
 			var me = this;
+			var arr = me.getChildren();
+			for(var i=0; i<arr.length; i++){
+				var child = arr[i];
+				if(child.canvas.attrContent.actInfo.QUESTACTID==actId){
+					me.selectChild(child);
+					return;
+				}
+			}
 			var designer = new Designer({title:info.title, selected:true, diagramContent:info.diagramContent, attrContent:info.attrContent});
 			me.addChild(designer);
 			me.selectChild(designer);
