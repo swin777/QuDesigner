@@ -190,7 +190,9 @@ define(["dojo/_base/declare",
 					}
 				}
 			}
-			
+			if(selectPortInfo.startPort.parent.id == selectPortInfo.endPort.parent.id){
+				return;
+			}
 			var conn = new ashDraw.Connection(this.canvas.connectType);
 			//conn.setSourceDecorator(new ashDraw.decoration.connection.BarDecorator());
 			conn.setTargetDecorator(new ashDraw.decoration.connection.ArrowDecorator());

@@ -68,11 +68,25 @@ define(["dojo/_base/declare",
 	    },
 	
 	    showResizeHandles: function(canvas, resizeHandle1, resizeHandle2, resizeHandle3, resizeHandle4, resizeHandle5, resizeHandle6, resizeHandle7, resizeHandle8, volatilePort) {
-	
-	        resizeHandle1.show(canvas, 0, 0);
-	        resizeHandle3.show(canvas, 0, 0);
-	        resizeHandle5.show(canvas, 0, 0);
-	        resizeHandle7.show(canvas, 0, 0);
+	    	var objHeight = this.getHeight();
+	        var objWidth = this.getWidth();
+	        var xPos = this.getX();
+	        var yPos = this.getY();
+	        
+	        resizeHandle1.show(canvas,xPos - resizeHandle1.getWidth(), yPos - resizeHandle1.getHeight());
+            resizeHandle3.show(canvas,xPos + objWidth, yPos - resizeHandle3.getHeight());
+            resizeHandle5.show(canvas,xPos + objWidth, yPos + objHeight);
+            resizeHandle7.show(canvas,xPos - resizeHandle7.getWidth(), yPos + objHeight);
+            resizeHandle2.show(canvas,xPos + (objWidth / 2) - (resizeHandle2.getWidth() / 2), yPos - resizeHandle2.getHeight());
+            resizeHandle4.show(canvas,xPos + objWidth, yPos + (objHeight / 2) - (resizeHandle4.getHeight() / 2));
+            resizeHandle6.show(canvas,xPos + (objWidth / 2) - (resizeHandle6.getWidth() / 2), yPos + objHeight);
+            resizeHandle8.show(canvas,xPos - resizeHandle8.getWidth(), yPos + (objHeight / 2) - (resizeHandle8.getHeight() / 2));
+            
+	        
+//	        resizeHandle1.show(canvas, 0, 0);
+//	        resizeHandle3.show(canvas, 0, 0);
+//	        resizeHandle5.show(canvas, 0, 0);
+//	        resizeHandle7.show(canvas, 0, 0);
 	
 	        resizeHandle1.setDraggable(this.isResizeable());
 	        resizeHandle3.setDraggable(this.isResizeable());
@@ -96,12 +110,12 @@ define(["dojo/_base/declare",
 	            resizeHandle4.setDraggable(this.isResizeable());
 	            resizeHandle6.setDraggable(this.isResizeable());
 	            resizeHandle8.setDraggable(this.isResizeable());
-	            resizeHandle2.show(canvas, 0, 0);
-	            resizeHandle4.show(canvas, 0, 0);
-	            resizeHandle6.show(canvas, 0, 0);
-	            resizeHandle8.show(canvas, 0, 0);
+//	            resizeHandle2.show(canvas, 0, 0);
+//	            resizeHandle4.show(canvas, 0, 0);
+//	            resizeHandle6.show(canvas, 0, 0);
+//	            resizeHandle8.show(canvas, 0, 0);
 	            if(!this.contain){
-	            	volatilePort.show(canvas, 0, 0, this)
+	            	volatilePort.show(canvas,xPos + (objWidth / 2), yPos + (objHeight / 2))
 	            }
 	        }
 	
