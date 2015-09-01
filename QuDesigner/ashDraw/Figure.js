@@ -115,7 +115,7 @@ define(["dojo/_base/declare",
 //	            resizeHandle6.show(canvas, 0, 0);
 //	            resizeHandle8.show(canvas, 0, 0);
 	            if(!this.contain){
-	            	volatilePort.show(canvas,xPos + (objWidth / 2), yPos + (objHeight / 2))
+	            	volatilePort.show(canvas,xPos + (objWidth / 2), yPos + (objHeight / 2), this)
 	            }
 	        }
 	
