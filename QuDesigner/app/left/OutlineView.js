@@ -45,8 +45,12 @@ define(["dojo/_base/declare",
 		},
 		
 		repaint : function(quCanvas, command) {
-			if(!quCanvas)
+			if(!quCanvas && command.figure){
 				quCanvas = command.figure.getCanvas();
+			}else if(!quCanvas && command.con){
+				quCanvas = command.con.getCanvas();
+			}
+				
 			
 			if(quCanvas)
 				this.exportPng(quCanvas);

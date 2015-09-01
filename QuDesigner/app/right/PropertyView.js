@@ -133,6 +133,9 @@ define(["dojo/_base/declare",
 				return;
 			var figure = event.command.figure;
 			var connection = event.command.connection;
+			if(event.command.con){
+				connection = event.command.con;
+			}
 			
 			var obj = null;
 			if(figure){
@@ -159,6 +162,19 @@ define(["dojo/_base/declare",
 					event.command.canvas.attrContent[obj.id]['QUESTID'] = obj.gId;
 				}
 			}
+			
+			if(obj && event.command.newSourcePort){
+				var source = event.command.newSourcePort.parent;
+				var target = event.command.newTargetPort.parent;
+				if(source instanceof ashDrawEx.shape.node.basic.Group){
+					event.command.canvas.attrContent[obj.id]['_type_'] = 'qwestConnect';
+				}else{
+					event.command.canvas.attrContent[obj.id]['_type_'] = 'missionConnect';
+				}
+				event.command.canvas.attrContent[obj.id]['source'] = source.id;
+				event.command.canvas.attrContent[obj.id]['target'] = target.id;
+			}
+			
 			if(typeof figureArr == 'undefined') {
 				if(figure === null || typeof figure == "undefined") {
 					me.gridReload(null);

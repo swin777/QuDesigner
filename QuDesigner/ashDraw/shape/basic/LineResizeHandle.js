@@ -2,7 +2,8 @@ define(["dojo/_base/declare",
         "ashDraw/shape/basic/Circle",
         "ashDraw/util/Color",
         "ashDraw/command/CommandType",
-        "ashDraw/Connection"], function(declare){
+        "ashDraw/Connection",
+        "ashDraw/command/CommandReconnect"], function(declare){
 	return declare("ashDraw.shape.basic.LineResizeHandle", ashDraw.shape.basic.Circle, {
 	    NAME: "ashDraw.shape.basic.LineResizeHandle",
 	    
@@ -52,10 +53,8 @@ define(["dojo/_base/declare",
 	    onDragStart: function(x, y) {
 	        this.ox = this.x;
 	        this.oy = this.y;
-
 	        //this.command = this.getCanvas().getCurrentSelection().createCommand(new ashDraw.command.CommandType(ashDraw.command.CommandType.MOVE_BASEPOINT));
-	        this.command = this.createCommand(new ashDraw.command.CommandType(ashDraw.command.CommandType.MOVE_BASEPOINT));
-
+	        this.command = new ashDraw.command.CommandReconnect(this.getCanvas().getCurrentSelection());
 	        return true;
 	    },
 

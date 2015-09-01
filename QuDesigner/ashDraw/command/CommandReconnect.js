@@ -7,6 +7,7 @@ define(["dojo/_base/declare", "ashDraw/command/Command"], function(declare){
 	    },
 	    constructor : function(con){
 	        this.con      = con;
+	        this.canvas = con.getCanvas();;
 	        this.oldSourcePort  = con.getSource();
 	        this.oldTargetPort  = con.getTarget();
 	        this.oldRouter      = con.getRouter();
