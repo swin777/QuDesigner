@@ -155,7 +155,7 @@ define(["dojo/_base/declare",
 	  	},
 	  	
 	  	createFigure : function(nodeId, clsName, nodeType) {
-	  		QuDesigner.app.currentCanvas();
+	  		//QuDesigner.app.currentCanvas();
 			if("SVG" == nodeType) {
 				figure = new ashDrawEx.shape.node.basic.CustomSvgFigure(nodeId, nodeId.shape_width, nodeId.shape_height);
 			} else if("Node" == nodeType) {

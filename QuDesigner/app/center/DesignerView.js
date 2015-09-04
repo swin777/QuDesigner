@@ -6,6 +6,7 @@ define(["dojo/_base/declare",
 			var me = this;	
 			me.watch("selectedChildWidget", function(name, oval, nval){
 				QuDesigner.app.eventbus.dispatch('changecanvas', nval.canvas);
+				_canvas = nval.canvas;
 			});
 		},
 		
