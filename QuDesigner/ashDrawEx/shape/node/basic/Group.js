@@ -16,13 +16,14 @@ define(["dojo/_base/declare",
 	        constructor: "manual"
 	    },
 	    
-	    constructor: function() {
+	    constructor: function(gLabel) {
 	    	var me = this;
 			QuDesigner.app.eventbus.addEventListener('unmarshalComplete', function(canvas) {
 				if(canvas===this.getCanvas()){
 					me.setCustomChildren();
 				}
 			}, this);
+			this.gLabel = gLabel;
 			this.inherited(arguments);
 	        this.setDimension(150, 150);
 	        this.setBackgroundColor(this.DEFAULT_COLOR);

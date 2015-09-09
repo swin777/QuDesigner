@@ -6,7 +6,8 @@ define(["dojo/_base/declare",
         "ashDraw/io/json/Writer",
         "app/top/ActList",
         "app/top/ImportList",
-        "dojo/json"], function(declare, MenuBar, DropDownMenu, PopupMenuBarItem, MenuBarItem, Writer, ActList, ImportList, json){
+        "ashDraw/io/png/Writer",
+        "dojo/json"], function(declare, MenuBar, DropDownMenu, PopupMenuBarItem, MenuBarItem, Writer, ActList, ImportList, PngWriter, json){
 	return declare("app.top.TopMainView", MenuBar, {
 		actList:null,
 		importList:null,
@@ -60,7 +61,7 @@ define(["dojo/_base/declare",
 		    			var writer = new Writer();
 		    			//var design = json.stringify(writer.marshal(quCanvas), null, 2);
 		    			var figures = quCanvas.getFigures().data;
-		    			var lines = quCanvas.getLines().data
+		    			var lines = quCanvas.getLines().data;
 		    			var attributes = quCanvas.attrContent;
 		    			var saveAttributes = {};
 		    			for(var member in attributes){
@@ -99,6 +100,186 @@ define(["dojo/_base/declare",
 		    			});
 		    		}	
 		        	
+		        }
+		    }));
+			
+			me.addChild(new MenuBarItem({
+		        label: "Copy",
+		        onClick: function(evt){
+		        	QuDesigner.app.tmpCanvas.clear();
+		        	var quCanvas = QuDesigner.app.currentCanvas();
+		    		if(quCanvas){
+		    			   var globalSelection = [];
+						   var globalLineSelection = [];
+						   var minX = 9999999;
+						   var minY = 9999999;
+						   for(i=0; i<quCanvas.currentMultiSelection.getSize(); i++){
+							   var figure = quCanvas.currentMultiSelection.get(i);
+							   if(minX>figure.x){
+								   minX = figure.x;
+							   }
+							   if(minY>figure.y){
+								   if(figure instanceof ashDrawEx.shape.node.basic.Group){
+									   minY = figure.y - 20;
+								   }else{
+									   minY = figure.y;
+								   }
+							   }
+						   }
+						   for(i=0; i<quCanvas.currentMultiSelection.getSize(); i++){
+							   var figure = quCanvas.currentMultiSelection.get(i);
+							   var cloneFigure;
+							   if(figure.gLabel){
+								   cloneFigure = new Function("return new " + figure.declaredClass + "('"+figure.gLabel+"')")();
+							   }else{
+								   cloneFigure = new Function("return new " + figure.declaredClass + "()")();
+							   }
+							   cloneFigure.width = figure.width;
+							   cloneFigure.height = figure.height;
+							   cloneFigure.x = figure.x - minX + 1;
+							   cloneFigure.y = figure.y - minY + 3;
+							   cloneFigure.setLabel(figure.label);
+							   if(figure.gLabel){
+								   cloneFigure.gLabel = figure.gLabel;
+							   }
+							   cloneFigure.orgId = figure.id;
+							   cloneFigure.orgPorts = figure.getPorts();
+							   globalSelection.push(cloneFigure);
+						   }
+						   var lines = quCanvas.getLines().data;
+						   for(var k=0; k<lines.length; k++){
+							   var chk = 0;
+							   if(lines[k] && lines[k].sourcePort && lines[k].sourcePort.parent){
+								   var source = lines[k].sourcePort;
+								   var target = lines[k].targetPort;
+								   var lineInfo = {};
+								   for(j=0; j<globalSelection.length; j++){
+									   var figure = globalSelection[j];
+									   if(source.parent.id==figure.orgId){
+										   lineInfo.source = figure;
+										   var ports = figure.orgPorts.data;
+										   for(x=0; x<ports.length; x++){
+											   if(source.id==ports[x].id){
+												   lineInfo.sourceSeq = x;
+												   break;
+											   }
+											   
+										   }
+										   chk++;
+									   }
+									   if(target.parent.id==figure.orgId){
+										   lineInfo.target = figure;
+										   var ports = figure.orgPorts.data;
+										   for(x=0; x<ports.length; x++){
+											   if(target.id==ports[x].id){
+												   lineInfo.targetSeq = x;
+												   break;
+											   }
+											   
+										   }
+										   chk++;
+									   }
+								   }
+								   if(chk==2){
+									   lineInfo.connectType = lines[k].connectType;
+									   globalLineSelection.push(lineInfo)
+								   }
+							   }
+						   }
+		    		}	
+		    		
+		    		for(i=0; i<globalSelection.length; i++){
+	    				   var figure = globalSelection[i];
+	    				   var command = new ashDraw.command.CommandAdd(QuDesigner.app.tmpCanvas, figure, figure.x, figure.y);
+	    				   QuDesigner.app.tmpCanvas.getCommandStack().execute(command);
+	    			   }
+	    			   
+	    			   for(i=0; i<globalLineSelection.length; i++){
+	    				   var line = globalLineSelection[i];
+	    				   var sourcePorts = line.source.getPorts();
+	    				   var targetPorts = line.target.getPorts();
+	    				   var conn = ashDraw.Connection.createConnection(sourcePorts.data[line.sourceSeq], targetPorts.data[line.targetSeq], line.connectType);
+	    				   conn.setTargetDecorator(new ashDraw.decoration.connection.ArrowDecorator());
+	    				   var command = new ashDraw.command.CommandConnect(QuDesigner.app.tmpCanvas, sourcePorts.data[line.sourceSeq], targetPorts.data[line.targetSeq], line.connectType);
+	    				   command.setConnection(conn);
+	    				   QuDesigner.app.tmpCanvas.getCommandStack().execute(command);
+	    			   }
+		        }
+		    }));
+			
+			me.addChild(new MenuBarItem({
+		        label: "Paste",
+		        onClick: function(evt){
+		        	var quCanvas = QuDesigner.app.currentCanvas();
+		    		if(quCanvas){
+		    			
+		    			   var globalSelection = [];
+						   var globalLineSelection = [];
+						   for(i=0; i<QuDesigner.app.tmpCanvas.getFigures().getSize(); i++){
+							   var figure = QuDesigner.app.tmpCanvas.getFigures().get(i);
+							   var cloneFigure;
+							   if(figure.gLabel){
+								   cloneFigure = new Function("return new " + figure.declaredClass + "('"+figure.gLabel+"')")();
+							   }else{
+								   cloneFigure = new Function("return new " + figure.declaredClass + "()")();
+							   }
+							   cloneFigure.width = figure.width;
+							   cloneFigure.height = figure.height;
+							   cloneFigure.x = figure.x;
+							   cloneFigure.y = figure.y;
+							   cloneFigure.setLabel(figure.label);
+							   if(figure.gLabel){
+								   cloneFigure.gLabel = figure.gLabel;
+							   }
+							   cloneFigure.orgId = figure.id;
+							   cloneFigure.orgPorts = figure.getPorts();
+							   globalSelection.push(cloneFigure);
+						   }
+						   var lines = QuDesigner.app.tmpCanvas.getLines().data;
+						   for(var k=0; k<lines.length; k++){
+							   var chk = 0;
+							   if(lines[k] && lines[k].sourcePort && lines[k].sourcePort.parent){
+								   var source = lines[k].sourcePort;
+								   var target = lines[k].targetPort;
+								   var lineInfo = {};
+								   for(j=0; j<globalSelection.length; j++){
+									   var figure = globalSelection[j];
+									   if(source.parent.id==figure.orgId){
+										   lineInfo.source = figure;
+										   var ports = figure.orgPorts.data;
+										   for(x=0; x<ports.length; x++){
+											   if(source.id==ports[x].id){
+												   lineInfo.sourceSeq = x;
+												   break;
+											   }
+											   
+										   }
+										   chk++;
+									   }
+									   if(target.parent.id==figure.orgId){
+										   lineInfo.target = figure;
+										   var ports = figure.orgPorts.data;
+										   for(x=0; x<ports.length; x++){
+											   if(target.id==ports[x].id){
+												   lineInfo.targetSeq = x;
+												   break;
+											   }
+											   
+										   }
+										   chk++;
+									   }
+								   }
+								   if(chk==2){
+									   lineInfo.connectType = lines[k].connectType;
+									   globalLineSelection.push(lineInfo)
+								   }
+							   }
+						   }  
+						   var writer = new PngWriter();
+							var png = writer.marshal(QuDesigner.app.tmpCanvas);
+						   quCanvas.pasteReady(globalSelection, globalLineSelection, png);
+		    			   
+		    		}	
 		        }
 		    }));
 			

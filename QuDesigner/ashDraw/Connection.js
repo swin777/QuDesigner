@@ -36,15 +36,18 @@ define(["dojo/_base/declare",
 	  	  	DEFAULT_ROUTER = new ashDraw.layout.connection.DirectRouter();
 	  	  }
 	  	  
-	  	  if(typeof DEFAULT_ROUTER != "undefined" && type=="DirectRouter"){
+	  	  if(typeof DEFAULT_ROUTER != "undefined" && (type=="DirectRouter"||type=="Direct")){
 	  	  	DEFAULT_ROUTER = new ashDraw.layout.connection.DirectRouter();
 	  	  	this.connectType = "Direct";
-	  	  }else  if(typeof DEFAULT_ROUTER != "undefined" && type=="ManhattanBridgedConnectionRouter"){
+	  	  }else  if(typeof DEFAULT_ROUTER != "undefined" && (type=="ManhattanBridgedConnectionRouter"||type=="Manhattan")){
 	  	  	DEFAULT_ROUTER = new ashDraw.layout.connection.ManhattanBridgedConnectionRouter();
 	  	  	this.connectType = "Manhattan";
-	  	  }else  if(typeof DEFAULT_ROUTER != "undefined" && type=="BezierConnectionRouter"){
+	  	  }else  if(typeof DEFAULT_ROUTER != "undefined" && (type=="BezierConnectionRouter"||type=="Bezier")){
 	  	  	DEFAULT_ROUTER = new ashDraw.layout.connection.BezierConnectionRouter();
 	  	  	this.connectType = "Bezier";
+	  	  }else{
+	  		this.connectType = "Direct";
+	  		DEFAULT_ROUTER = new ashDraw.layout.connection.DirectRouter();
 	  	  }
 	  	  
 	      this.router = DEFAULT_ROUTER;
@@ -447,8 +450,8 @@ define(["dojo/_base/declare",
 	    }
 	});
 	
-	Connection.createConnection=function(sourcePort, targetPort){
-	    return new ashDraw.Connection();
+	Connection.createConnection=function(sourcePort, targetPort, connectType){
+	    return new ashDraw.Connection(connectType);
 	};
 	
 	return Connection;

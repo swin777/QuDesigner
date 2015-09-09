@@ -29,8 +29,13 @@ define(["dojo/_base/declare",
 	    },
 	    
 	    attrContent:null,
+	    pasteFigures:null,
+	    pasteLines:null,
+	    pasteMode:false,
+	    divId:null,
 	    
 	    constructor:function(id){
+	    	this.divId = id;
 	    	this.inherited(arguments, [id]);
 			this.setScrollArea("#"+id);
 			this.currentDropConnection = null;
@@ -185,6 +190,10 @@ define(["dojo/_base/declare",
 	    },
 	    
 	    onMouseDown : function(x, y, clickFigure){
+	    	if(this.pasteMode){
+	    		this.paste(x, y);
+	    		return;
+	    	}
 	    	var canDragStart = true;
 	    	var figure
 			if (typeof clickFigure != "undefined" && clickFigure!==null){
@@ -965,6 +974,55 @@ define(["dojo/_base/declare",
 	            }
 	        }
 	        return {minX:minX, minY:minY, maxX:maxX, maxY:maxY};
+	   },
+	   
+	   pasteReady:function(pasteFigures, pasteLines, base64){
+		   var me = this;
+		   me.pasteFigures = pasteFigures;
+		   me.pasteLines = pasteLines;
+		   me.pasteMode = true;
+		   
+		   if(me.pasteMode && pasteFigures && pasteFigures.length>0){
+			   $('body').append(
+					   '<div id="mycursor" style="cursor: none;position: absolute;display: none;top: 0;left: 0;z-index: 10000;">' +
+					   '<image id="tmpImg" src="'+base64+'"/>' +
+					   '</div>'
+					   )
+			  
+			   $('#'+this.divId).mousemove(function(e){
+				   $('#mycursor').show();
+				   $('#mycursor').css('left', e.clientX - 7).css('top', e.clientY + 7);
+		       });
+			   //$('#'+me.divId).css('cursor', 'url('+base64+')', 'auto');
+		   }
+		   
+	   },
+	   
+	   paste:function(mX, mY){
+		   var me = this;
+		   QuDesigner.app.tmpCanvas.clear();
+		   me.pasteMode = false;
+		   $('#mycursor').remove();
+		   if(me.pasteFigures){
+			   for(i=0; i<me.pasteFigures.length; i++){
+				   var figure = me.pasteFigures[i];
+				   var command = new ashDraw.command.CommandAdd(this, figure, figure.x+mX-7, figure.y+mY+7);
+			       this.getCommandStack().execute(command);
+			   }
+			   
+			   for(i=0; i<me.pasteLines.length; i++){
+				   var line = me.pasteLines[i];
+				   var sourcePorts = line.source.getPorts();
+				   var targetPorts = line.target.getPorts();
+				   var conn = ashDraw.Connection.createConnection(sourcePorts.data[line.sourceSeq], targetPorts.data[line.targetSeq], line.connectType);
+				   conn.setTargetDecorator(new ashDraw.decoration.connection.ArrowDecorator());
+				   var command = new ashDraw.command.CommandConnect(this, sourcePorts.data[line.sourceSeq], targetPorts.data[line.targetSeq], line.connectType);
+				   command.setConnection(conn);
+			       this.getCommandStack().execute(command);
+			   } 
+		   }
+		   me.pasteFigures=null;
+		   me.pasteLines=null;
 	   }
 	});
 });

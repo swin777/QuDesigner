@@ -6,7 +6,7 @@ define(["dojo/_base/declare", "ashDraw/command/Command"], function(declare){
 	    },
 	    constructor: function(canvas, figure, x,y){
 	    	this.inherited(arguments, ["Figure added"]);
-	 	   this.label = "Figure added";
+	 	    this.label = "Figure added";
 	        this.figure = figure;
 	        this.canvas = canvas;
 	        this.x = x;

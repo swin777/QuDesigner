@@ -37,6 +37,10 @@ define(["dojo/_base/declare",
 			}, me);
 			QuDesigner.app.eventbus.dispatch('changecanvas', me.canvas);
 			me.canvas.setGrid(true);
+			
+			if(!QuDesigner.app.tmpCanvas){
+				QuDesigner.app.tmpCanvas = new ExCanvas("tmpArea");
+			}
 		}
 	});
 });

@@ -5,11 +5,12 @@ define(["dojo/_base/declare", "ashDraw/command/Command"], function(declare){
 	    "-chains-": {
 	        constructor: "manual"
 	    },
-	    constructor: function(canvas, source, target){
+	    constructor: function(canvas, source, target, connectType){
 	 	   this.inherited(arguments, ["Connecting Ports"]);
 	        this.canvas = canvas;
 	        this.source   = source;
 	        this.target   = target;
+	        this.connectType = connectType;
 	        this.connection = null;
 	     },
 	    
@@ -20,6 +21,9 @@ define(["dojo/_base/declare", "ashDraw/command/Command"], function(declare){
 	    execute:function(){
 	       if(this.connection===null){
 	          this.connection = ashDraw.Connection.createConnection(this.source, this.target);
+	       }
+	       if(this.connectType){
+	    	   this.connection.connectType = this.connectType;
 	       }
 	       this.connection.setSource(this.source);
 	       this.connection.setTarget(this.target);

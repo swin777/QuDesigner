@@ -16,6 +16,7 @@ define(["dojo/_base/declare",
 		outlineView:null,
 		designerView:null,
 		propertyView:null,
+		tmpCanvas:null,
 		
 	    constructor: function(divId) {
 	    	var me = this;
