@@ -29,6 +29,7 @@ define(["dojo/_base/declare",
 	    },
 	    
 	    attrContent:null,
+	    pasteAttrContent:null,
 	    pasteFigures:null,
 	    pasteLines:null,
 	    pasteMode:false,
@@ -976,11 +977,12 @@ define(["dojo/_base/declare",
 	        return {minX:minX, minY:minY, maxX:maxX, maxY:maxY};
 	   },
 	   
-	   pasteReady:function(pasteFigures, pasteLines, base64){
+	   pasteReady:function(pasteFigures, pasteLines, base64, pasteAttrContent){
 		   var me = this;
 		   me.pasteFigures = pasteFigures;
 		   me.pasteLines = pasteLines;
 		   me.pasteMode = true;
+		   me.pasteAttrContent = pasteAttrContent;
 		   
 		   if(me.pasteMode && pasteFigures && pasteFigures.length>0){
 			   $('body').append(
@@ -1000,7 +1002,6 @@ define(["dojo/_base/declare",
 	   
 	   paste:function(mX, mY){
 		   var me = this;
-		   QuDesigner.app.tmpCanvas.clear();
 		   me.pasteMode = false;
 		   $('#mycursor').remove();
 		   if(me.pasteFigures){
@@ -1008,6 +1009,12 @@ define(["dojo/_base/declare",
 				   var figure = me.pasteFigures[i];
 				   var command = new ashDraw.command.CommandAdd(this, figure, figure.x+mX-7, figure.y+mY+7);
 			       this.getCommandStack().execute(command);
+			       var cloneObj = JSON.parse(JSON.stringify(me.pasteAttrContent[figure.orgId]));
+			       if(cloneObj['_type_'] == 'mission'){
+			    	   cloneObj['QUESTID'] = me.attrContent[figure.id]['QUESTID'];
+					}
+			       
+			       me.attrContent[figure.id] = cloneObj;
 			   }
 			   
 			   for(i=0; i<me.pasteLines.length; i++){
@@ -1023,6 +1030,7 @@ define(["dojo/_base/declare",
 		   }
 		   me.pasteFigures=null;
 		   me.pasteLines=null;
+		   QuDesigner.app.tmpCanvas.clear();
 	   }
 	});
 });

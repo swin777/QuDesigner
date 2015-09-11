@@ -107,10 +107,11 @@ define(["dojo/_base/declare",
 		        label: "Copy",
 		        onClick: function(evt){
 		        	QuDesigner.app.tmpCanvas.clear();
+		        	QuDesigner.app.tmpCanvas.attrContent = {};
 		        	var quCanvas = QuDesigner.app.currentCanvas();
 		    		if(quCanvas){
-		    			   var globalSelection = [];
-						   var globalLineSelection = [];
+		    			   var figureArr = [];
+						   var lineArr = [];
 						   var minX = 9999999;
 						   var minY = 9999999;
 						   for(i=0; i<quCanvas.currentMultiSelection.getSize(); i++){
@@ -144,7 +145,7 @@ define(["dojo/_base/declare",
 							   }
 							   cloneFigure.orgId = figure.id;
 							   cloneFigure.orgPorts = figure.getPorts();
-							   globalSelection.push(cloneFigure);
+							   figureArr.push(cloneFigure);
 						   }
 						   var lines = quCanvas.getLines().data;
 						   for(var k=0; k<lines.length; k++){
@@ -153,8 +154,9 @@ define(["dojo/_base/declare",
 								   var source = lines[k].sourcePort;
 								   var target = lines[k].targetPort;
 								   var lineInfo = {};
-								   for(j=0; j<globalSelection.length; j++){
-									   var figure = globalSelection[j];
+								   lineInfo.orgId = lines[k].id;
+								   for(j=0; j<figureArr.length; j++){
+									   var figure = figureArr[j];
 									   if(source.parent.id==figure.orgId){
 										   lineInfo.source = figure;
 										   var ports = figure.orgPorts.data;
@@ -182,20 +184,21 @@ define(["dojo/_base/declare",
 								   }
 								   if(chk==2){
 									   lineInfo.connectType = lines[k].connectType;
-									   globalLineSelection.push(lineInfo)
+									   lineArr.push(lineInfo)
 								   }
 							   }
 						   }
 		    		}	
 		    		
-		    		for(i=0; i<globalSelection.length; i++){
-	    				   var figure = globalSelection[i];
+		    		for(i=0; i<figureArr.length; i++){
+	    				   var figure = figureArr[i];
 	    				   var command = new ashDraw.command.CommandAdd(QuDesigner.app.tmpCanvas, figure, figure.x, figure.y);
 	    				   QuDesigner.app.tmpCanvas.getCommandStack().execute(command);
+	    				   QuDesigner.app.tmpCanvas.attrContent[figure.id] = quCanvas.attrContent[figure.orgId];
 	    			   }
 	    			   
-	    			   for(i=0; i<globalLineSelection.length; i++){
-	    				   var line = globalLineSelection[i];
+	    			   for(i=0; i<lineArr.length; i++){
+	    				   var line = lineArr[i];
 	    				   var sourcePorts = line.source.getPorts();
 	    				   var targetPorts = line.target.getPorts();
 	    				   var conn = ashDraw.Connection.createConnection(sourcePorts.data[line.sourceSeq], targetPorts.data[line.targetSeq], line.connectType);
@@ -203,6 +206,7 @@ define(["dojo/_base/declare",
 	    				   var command = new ashDraw.command.CommandConnect(QuDesigner.app.tmpCanvas, sourcePorts.data[line.sourceSeq], targetPorts.data[line.targetSeq], line.connectType);
 	    				   command.setConnection(conn);
 	    				   QuDesigner.app.tmpCanvas.getCommandStack().execute(command);
+	    				   QuDesigner.app.tmpCanvas.attrContent[conn.id] = quCanvas.attrContent[line.orgId];
 	    			   }
 		        }
 		    }));
@@ -212,9 +216,10 @@ define(["dojo/_base/declare",
 		        onClick: function(evt){
 		        	var quCanvas = QuDesigner.app.currentCanvas();
 		    		if(quCanvas){
-		    			
-		    			   var globalSelection = [];
-						   var globalLineSelection = [];
+		    			   var figureArr = [];
+		    			   var qwestArr = [];
+		    			   var missionArr = [];
+						   var lineArr = [];
 						   for(i=0; i<QuDesigner.app.tmpCanvas.getFigures().getSize(); i++){
 							   var figure = QuDesigner.app.tmpCanvas.getFigures().get(i);
 							   var cloneFigure;
@@ -227,14 +232,28 @@ define(["dojo/_base/declare",
 							   cloneFigure.height = figure.height;
 							   cloneFigure.x = figure.x;
 							   cloneFigure.y = figure.y;
+							   cloneFigure.orgId = figure.id;
 							   cloneFigure.setLabel(figure.label);
 							   if(figure.gLabel){
 								   cloneFigure.gLabel = figure.gLabel;
 							   }
 							   cloneFigure.orgId = figure.id;
 							   cloneFigure.orgPorts = figure.getPorts();
-							   globalSelection.push(cloneFigure);
+							   
+							   if(figure instanceof ashDrawEx.shape.node.basic.Group){
+								   qwestArr.push(cloneFigure);
+							   }else{
+								   missionArr.push(cloneFigure);
+							   }
+							   
 						   }
+						   for(var k=0; k<qwestArr.length; k++){
+							   figureArr.push(qwestArr[k]);
+						   }
+						   for(var k=0; k<missionArr.length; k++){
+							   figureArr.push(missionArr[k]);
+						   }
+						   
 						   var lines = QuDesigner.app.tmpCanvas.getLines().data;
 						   for(var k=0; k<lines.length; k++){
 							   var chk = 0;
@@ -242,8 +261,8 @@ define(["dojo/_base/declare",
 								   var source = lines[k].sourcePort;
 								   var target = lines[k].targetPort;
 								   var lineInfo = {};
-								   for(j=0; j<globalSelection.length; j++){
-									   var figure = globalSelection[j];
+								   for(j=0; j<figureArr.length; j++){
+									   var figure = figureArr[j];
 									   if(source.parent.id==figure.orgId){
 										   lineInfo.source = figure;
 										   var ports = figure.orgPorts.data;
@@ -270,14 +289,15 @@ define(["dojo/_base/declare",
 									   }
 								   }
 								   if(chk==2){
+									   lineInfo.orgId = lines[k].id;
 									   lineInfo.connectType = lines[k].connectType;
-									   globalLineSelection.push(lineInfo)
+									   lineArr.push(lineInfo)
 								   }
 							   }
 						   }  
 						   var writer = new PngWriter();
-							var png = writer.marshal(QuDesigner.app.tmpCanvas);
-						   quCanvas.pasteReady(globalSelection, globalLineSelection, png);
+						   var png = writer.marshal(QuDesigner.app.tmpCanvas);
+						   quCanvas.pasteReady(figureArr, lineArr, png, QuDesigner.app.tmpCanvas.attrContent);
 		    			   
 		    		}	
 		        }

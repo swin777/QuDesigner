@@ -163,6 +163,10 @@ define(["dojo/_base/declare",
 				}
 			}
 			
+			if(obj && event.command.canvas && event.command.canvas.attrContent && !event.command.canvas.getFigure(obj.id) && !event.command.canvas.getLine(obj.id)){
+				delete event.command.canvas.attrContent[obj.id]
+			}
+			
 			if(obj && event.command.newSourcePort){
 				var source = event.command.newSourcePort.parent;
 				var target = event.command.newTargetPort.parent;
