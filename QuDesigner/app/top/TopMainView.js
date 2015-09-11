@@ -5,12 +5,10 @@ define(["dojo/_base/declare",
         "dijit/MenuBarItem",
         "ashDraw/io/json/Writer",
         "app/top/ActList",
-        "app/top/ImportList",
         "ashDraw/io/png/Writer",
-        "dojo/json"], function(declare, MenuBar, DropDownMenu, PopupMenuBarItem, MenuBarItem, Writer, ActList, ImportList, PngWriter, json){
+        "dojo/json"], function(declare, MenuBar, DropDownMenu, PopupMenuBarItem, MenuBarItem, Writer, ActList, PngWriter, json){
 	return declare("app.top.TopMainView", MenuBar, {
 		actList:null,
-		importList:null,
 		
 		constructor: function() {
 			var me = this;
@@ -42,16 +40,6 @@ define(["dojo/_base/declare",
 		        	me.actList.listStart();
 		        }
 		    }));
-			
-//			me.addChild(new MenuBarItem({
-//		        label: "Import",
-//		        onClick: function(evt){
-//		        	if(!me.importList){
-//		        		me.importList = new ImportList();
-//		        	}
-//		        	me.importList.listStart();
-//		        }
-//		    }));
 			
 			me.addChild(new MenuBarItem({
 		        label: "Save",
