@@ -97,13 +97,19 @@ define(["dojo/_base/declare",
 		        	QuDesigner.app.tmpCanvas.clear();
 		        	QuDesigner.app.tmpCanvas.attrContent = {};
 		        	var quCanvas = QuDesigner.app.currentCanvas();
+		        	var currSelectFigures = quCanvas.currentMultiSelection;
+		        	if(currSelectFigures.getSize()==0){
+		        		if(quCanvas.getCurrentSelection()){
+		        			currSelectFigures.add(quCanvas.getCurrentSelection());
+		        		}
+		        	}
 		    		if(quCanvas){
 		    			   var figureArr = [];
 						   var lineArr = [];
 						   var minX = 9999999;
 						   var minY = 9999999;
-						   for(i=0; i<quCanvas.currentMultiSelection.getSize(); i++){
-							   var figure = quCanvas.currentMultiSelection.get(i);
+						   for(i=0; i<currSelectFigures.getSize(); i++){
+							   var figure = currSelectFigures.get(i);
 							   if(minX>figure.x){
 								   minX = figure.x;
 							   }
@@ -115,8 +121,8 @@ define(["dojo/_base/declare",
 								   }
 							   }
 						   }
-						   for(i=0; i<quCanvas.currentMultiSelection.getSize(); i++){
-							   var figure = quCanvas.currentMultiSelection.get(i);
+						   for(i=0; i<currSelectFigures.getSize(); i++){
+							   var figure = currSelectFigures.get(i);
 							   var cloneFigure;
 							   if(figure.gLabel){
 								   cloneFigure = new Function("return new " + figure.declaredClass + "('"+figure.gLabel+"')")();

@@ -28,12 +28,7 @@ define(["dojo/_base/declare",
 	        constructor: "manual"
 	    },
 	    
-	    attrContent:null,
-	    pasteAttrContent:null,
-	    pasteFigures:null,
-	    pasteLines:null,
-	    pasteMode:false,
-	    divId:null,
+	    
 	    
 	    constructor:function(id){
 	    	this.divId = id;
@@ -983,7 +978,6 @@ define(["dojo/_base/declare",
 		   me.pasteLines = pasteLines;
 		   me.pasteMode = true;
 		   me.pasteAttrContent = pasteAttrContent;
-		   
 		   if(me.pasteMode && pasteFigures && pasteFigures.length>0){
 			   $('body').append(
 					   '<div id="mycursor" style="cursor: none;position: absolute;display: none;top: 0;left: 0;z-index: 10000;">' +
@@ -993,7 +987,7 @@ define(["dojo/_base/declare",
 			  
 			   $('#'+this.divId).mousemove(function(e){
 				   $('#mycursor').show();
-				   $('#mycursor').css('left', e.clientX - 7).css('top', e.clientY + 7);
+				   $('#mycursor').css('left', e.clientX + 20).css('top', e.clientY + 20);
 		       });
 			   //$('#'+me.divId).css('cursor', 'url('+base64+')', 'auto');
 		   }
@@ -1004,33 +998,61 @@ define(["dojo/_base/declare",
 		   var me = this;
 		   me.pasteMode = false;
 		   $('#mycursor').remove();
-		   if(me.pasteFigures){
-			   for(i=0; i<me.pasteFigures.length; i++){
-				   var figure = me.pasteFigures[i];
-				   var command = new ashDraw.command.CommandAdd(this, figure, figure.x+mX-7, figure.y+mY+7);
-			       this.getCommandStack().execute(command);
-			       var cloneObj = JSON.parse(JSON.stringify(me.pasteAttrContent[figure.orgId]));
-			       if(cloneObj['_type_'] == 'mission'){
-			    	   cloneObj['QUESTID'] = me.attrContent[figure.id]['QUESTID'];
-					}
-			       
-			       me.attrContent[figure.id] = cloneObj;
+		   if(me.hitCheck(mX, mY)){
+			   alert("겹치는부분이 있습니다.\n다른영역에 붙여넣기하세요.");
+		   }else{
+			   if(me.pasteFigures){
+				   for(i=0; i<me.pasteFigures.length; i++){
+					   var figure = me.pasteFigures[i];
+					   var command = new ashDraw.command.CommandAdd(this, figure, figure.x+mX-7, figure.y+mY+7);
+				       this.getCommandStack().execute(command);
+				       var cloneObj = JSON.parse(JSON.stringify(me.pasteAttrContent[figure.orgId]));
+				       if(cloneObj['_type_'] == 'mission'){
+				    	   cloneObj['QUESTID'] = me.attrContent[figure.id]['QUESTID'];
+						}
+				       
+				       me.attrContent[figure.id] = cloneObj;
+				   }
+				   
+				   for(i=0; i<me.pasteLines.length; i++){
+					   var line = me.pasteLines[i];
+					   var sourcePorts = line.source.getPorts();
+					   var targetPorts = line.target.getPorts();
+					   var conn = ashDraw.Connection.createConnection(sourcePorts.data[line.sourceSeq], targetPorts.data[line.targetSeq], line.connectType);
+					   conn.setTargetDecorator(new ashDraw.decoration.connection.ArrowDecorator());
+					   var command = new ashDraw.command.CommandConnect(this, sourcePorts.data[line.sourceSeq], targetPorts.data[line.targetSeq], line.connectType);
+					   command.setConnection(conn);
+				       this.getCommandStack().execute(command);
+				   } 
 			   }
-			   
-			   for(i=0; i<me.pasteLines.length; i++){
-				   var line = me.pasteLines[i];
-				   var sourcePorts = line.source.getPorts();
-				   var targetPorts = line.target.getPorts();
-				   var conn = ashDraw.Connection.createConnection(sourcePorts.data[line.sourceSeq], targetPorts.data[line.targetSeq], line.connectType);
-				   conn.setTargetDecorator(new ashDraw.decoration.connection.ArrowDecorator());
-				   var command = new ashDraw.command.CommandConnect(this, sourcePorts.data[line.sourceSeq], targetPorts.data[line.targetSeq], line.connectType);
-				   command.setConnection(conn);
-			       this.getCommandStack().execute(command);
-			   } 
+			   me.pasteFigures=null;
+			   me.pasteLines=null;
+			   QuDesigner.app.tmpCanvas.clear();
 		   }
-		   me.pasteFigures=null;
-		   me.pasteLines=null;
-		   QuDesigner.app.tmpCanvas.clear();
+	   },
+	   
+	   hitCheck:function(mX, mY){
+		   var me = this;
+		   for(k=0; k<me.pasteFigures.length; k++){
+			   var sMinX = me.pasteFigures[k].x + mX;
+			   var sMaxX = me.pasteFigures[k].x + me.pasteFigures[k].width + mX;
+			   var sMinY = me.pasteFigures[k].y + mY;
+			   var sMaxY = me.pasteFigures[k].y + me.pasteFigures[k].height + mY;
+			   for(i=0; i<me.figures.getSize(); i++){
+				   var minX = me.figures.get(i).x;
+				   var maxX = me.figures.get(i).x + me.figures.get(i).width;
+				   var minY = me.figures.get(i).y;
+				   var maxY = me.figures.get(i).y + me.figures.get(i).height;
+				   
+				   if( ((sMinX>minX && sMinX<maxX) || (sMaxX>minX && sMaxX<maxX)) && ((sMinY>minY && sMinY<maxY) || (sMaxY>minY && sMaxY<maxY)) ){
+					   console.log(sMinX + "<" + sMaxX + "  " + sMinY + "<" + sMaxY);
+					   console.log(minX + "<" + maxX + "  " + minY + "<" + maxY);
+					   return true;
+				   }
+			   }  
+		   }
+		   
+		   return false;
 	   }
 	});
 });

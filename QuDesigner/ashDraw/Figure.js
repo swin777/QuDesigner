@@ -798,6 +798,9 @@ define(["dojo/_base/declare",
 	
 	    mouseoverHandler: function(event) {
 	        try {
+	        	if (_canvas.pasteMode === true){
+	                return;
+	            }
 	            _canvas.onMouseOver(event.layerX, event.layerY, this.parentFigure);
 	        } catch (e) {}
 	    },

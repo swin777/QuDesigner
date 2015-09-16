@@ -21,6 +21,13 @@ define(["dojo/_base/declare",
 	return declare("ashDraw.Canvas", null, {
 	    NAME : "ashDraw.Canvas",
 	    
+	    attrContent:null,
+	    pasteAttrContent:null,
+	    pasteFigures:null,
+	    pasteLines:null,
+	    pasteMode:false,
+	    divId:null,
+	    
 	    constructor : function(canvasId){
 	        this.setScrollArea(document.body);
 	        this.canvasId = canvasId;
@@ -163,6 +170,10 @@ define(["dojo/_base/declare",
 	        
 	        this.html.bind("mouseup touchend", $.proxy(function(event)
 	        {
+	        	if (this.pasteMode === true){
+	                return;
+	            }
+	        	
 	            if (this.mouseDown === false){
 	                return;
 	            }
@@ -175,6 +186,10 @@ define(["dojo/_base/declare",
 
 	        this.html.bind("mousemove touchmove", $.proxy(function(event)
 	        {
+	        	if (this.pasteMode === true){
+	                return;
+	            }
+	        	
 	            event = this._getEvent(event);
 	            if (this.mouseDown === false){
 	               var pos = this.fromDocumentToCanvasCoordinate(event.clientX, event.clientY);
