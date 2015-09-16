@@ -186,6 +186,8 @@ define(["dojo/_base/declare",
 	    },
 	    
 	    onMouseDown : function(x, y, clickFigure){
+	    	$('#mycursor').remove();
+	    	
 	    	if(this.pasteMode){
 	    		this.paste(x, y);
 	    		return;
@@ -984,12 +986,32 @@ define(["dojo/_base/declare",
 					   '<image id="tmpImg" src="'+base64+'"/>' +
 					   '</div>'
 					   )
-			  
-			   $('#'+this.divId).mousemove(function(e){
-				   $('#mycursor').show();
-				   $('#mycursor').css('left', e.clientX + 20).css('top', e.clientY + 20);
-		       });
-			   //$('#'+me.divId).css('cursor', 'url('+base64+')', 'auto');
+			  $('#mycursor').show();
+			   $('body').mousemove(function(e){
+				   $('#mycursor').css('left', e.clientX + 1).css('top', e.clientY + 1);
+		       });			   
+			   
+			   $('#'+this.divId).hover(
+				   function() {
+					   if($('#mycursor').css('display')=='none'){
+						   $('#mycursor').show();
+					   }
+					   
+				   }, function() {
+					   $('#mycursor').hide();
+				   }
+			   );
+			   $('#mycursor').hover(
+					   function() {
+						   if($('#mycursor').css('display')=='none'){
+							   $('#mycursor').show();
+						   }
+						   
+					   }, function() {
+						   $('#mycursor').hide();
+					   }
+				   );
+				//document.getElementById(this.divId).style.cursor = 'url("'+base64+'"), auto';
 		   }
 		   
 	   },
