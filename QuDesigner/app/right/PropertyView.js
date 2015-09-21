@@ -41,7 +41,8 @@ define(["dojo/_base/declare",
 		startup:function(){
 			var me = this;		
 			this.inherited(arguments);
-			me.contentPane = new ContentPane({align:"right", title:'property', style:'padding:0px;'});
+			var winHeight = $(window).height();
+			me.contentPane = new ContentPane({align:"right", title:'property', style:'height:'+(winHeight-310)+'px; padding:0px;'});
 			me.addChild(me.contentPane);
 			
 			var myButton = new Button({

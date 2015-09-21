@@ -923,10 +923,10 @@ define(["dojo/_base/declare",
 	    },
 	    
 	    setGrid:function(flag){
-	    	if($('#' + this.canvasId).css("background-image")=="none"){
-	    		$('#' + this.canvasId).css("background-image", "url(../images/designer/grid_10.png)"); 
+	    	if(flag){
+	    		$('#' + this.canvasId).attr("class", "canvas"); 
 	    	}else{
-	    		$('#' + this.canvasId).css("background-image", ""); 
+	    		$('#' + this.canvasId).attr("class", "canvasMonitor"); 
 	    	} 
 	    },
 	    

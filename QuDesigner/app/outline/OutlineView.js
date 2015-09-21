@@ -39,7 +39,7 @@ define(["dojo/_base/declare",
 			
 			$('#'+me.contentPane.domNode.id).append(
 					'<div style="position:relative; width:99%; height:99%;">'+
-				 		'<div id="outLineDiv" style="position:absolute; overflow:hidden; width:100%; height:100%;"></div>'+
+				 		'<div id="outLineDiv" style="position:absolute; overflow:hidden; width:1500px; height:1500px;"></div>'+
 				 		'<div id="viewDiv" style="position:absolute; border-width:0px; border-style:dashed; border-color:#9E032F; width:100%; height:100%;"></div>'+
 				 	'</div>');
 		},
@@ -51,10 +51,10 @@ define(["dojo/_base/declare",
 				quCanvas = command.con.getCanvas();
 			}
 				
-			
 			if(quCanvas)
 				this.exportPng(quCanvas);
 			this.outLineDivWidth = $("#outLineDiv").width();
+			console.log(this.outLineDivWidth)
 			this.outLineDivHeight = $("#outLineDiv").height();
 			this.viewWidth = $("#viewDiv").width();
 			this.viewHeight = $("#viewDiv").height();

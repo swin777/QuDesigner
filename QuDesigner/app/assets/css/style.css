@@ -71,6 +71,11 @@ html, body {
 	background : transparent url(../images/designer/grid_10.png);
 }
 
+.canvasMonitor {
+	padding:0px;
+	margin:0px;
+}
+
 .gridContainerZone {
    vertical-align: top;
  }

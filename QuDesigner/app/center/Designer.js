@@ -32,9 +32,6 @@ define(["dojo/_base/declare",
 				reader.unmarshal(me.canvas, json.parse(me.info.diagramContent));
 			}
 			QuDesigner.app.eventbus.dispatch('addcanvas', me.canvas);
-			QuDesigner.app.eventbus.addEventListener('palleteLoad', function() {
-				me.canvas.reDragAbleReg();
-			}, me);
 			QuDesigner.app.eventbus.dispatch('changecanvas', me.canvas);
 			me.canvas.setGrid(true);
 			
