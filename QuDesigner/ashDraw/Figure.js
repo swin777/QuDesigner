@@ -397,9 +397,9 @@ define(["dojo/_base/declare",
 	            this.x = Math.round(tmpX) * 10;
 	            this.y = Math.round(tmpY) * 10;
 	        }
-	        if(this.command){
-	        	return;
-	        }
+//	        if(this.command){
+//	        	return;
+//	        }
 	        this.command.setPosition(this.x, this.y);
 	        this.isInDragDrop = false;
 	
