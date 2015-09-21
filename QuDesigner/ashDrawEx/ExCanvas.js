@@ -28,7 +28,7 @@ define(["dojo/_base/declare",
 	        constructor: "manual"
 	    },
 	    
-	    
+	    figureDragAble:true,
 	    
 	    constructor:function(id){
 	    	this.divId = id;
@@ -346,38 +346,42 @@ define(["dojo/_base/declare",
 	    },
 	    
 	    figureDrag : function(/* :int */dx,/* :int */dy, mouseDragFigure){
-	            if(this.linesToRepaintAfterDragDrop.isEmpty()===true && (mouseDragFigure instanceof ashDraw.shape.node.Node)){
-	                var nodeConnections = mouseDragFigure.getConnections();
-	                var newLineIntersections = this.lineIntersections.clone();
-	                this.lineIntersections.each($.proxy(function(i, inter){
-	                    
-	                    if(nodeConnections.contains(inter.line) || nodeConnections.contains(inter.other)){
-	                        newLineIntersections.remove(inter);
-	                        this.linesToRepaintAfterDragDrop.add(inter.line);
-	                        this.linesToRepaintAfterDragDrop.add(inter.other);
-	                    }
-	                },this));
-	                this.lineIntersections = newLineIntersections;
-	                this.linesToRepaintAfterDragDrop.each(function(i, line){
-	                    line.svgPathString=null;
-	                    line.repaint();
-	                });
-	            }
-	            
-	            mouseDragFigure.onDrag(dx, dy);
-	            
-	            var p = this.fromDocumentToCanvasCoordinate(this.mouseDownX + (dx/this.zoomFactor), this.mouseDownY + (dy/this.zoomFactor));           
-	            var target = this.getBestFigure(p.x, p.y,mouseDragFigure);
-	            
-	            if (target !== this.currentDropTarget) {
-	               if (this.currentDropTarget) {
-	                    this.currentDropTarget.onDragLeave(mouseDragFigure);                     
-	                    this.currentDropTarget = null;
-	                }
-	                if (target !== null) {
-	                    this.currentDropTarget = target.onDragEnter(mouseDragFigure);
-	                }
-	            }
+	    	var me = this;
+	    	if(!me.figureDragAble){
+	    		return;
+	    	}
+            if(this.linesToRepaintAfterDragDrop.isEmpty()===true && (mouseDragFigure instanceof ashDraw.shape.node.Node)){
+                var nodeConnections = mouseDragFigure.getConnections();
+                var newLineIntersections = this.lineIntersections.clone();
+                this.lineIntersections.each($.proxy(function(i, inter){
+                    
+                    if(nodeConnections.contains(inter.line) || nodeConnections.contains(inter.other)){
+                        newLineIntersections.remove(inter);
+                        this.linesToRepaintAfterDragDrop.add(inter.line);
+                        this.linesToRepaintAfterDragDrop.add(inter.other);
+                    }
+                },this));
+                this.lineIntersections = newLineIntersections;
+                this.linesToRepaintAfterDragDrop.each(function(i, line){
+                    line.svgPathString=null;
+                    line.repaint();
+                });
+            }
+            
+            mouseDragFigure.onDrag(dx, dy);
+            
+            var p = this.fromDocumentToCanvasCoordinate(this.mouseDownX + (dx/this.zoomFactor), this.mouseDownY + (dy/this.zoomFactor));           
+            var target = this.getBestFigure(p.x, p.y,mouseDragFigure);
+            
+            if (target !== this.currentDropTarget) {
+               if (this.currentDropTarget) {
+                    this.currentDropTarget.onDragLeave(mouseDragFigure);                     
+                    this.currentDropTarget = null;
+                }
+                if (target !== null) {
+                    this.currentDropTarget = target.onDragEnter(mouseDragFigure);
+                }
+            }
 	    },
 	    
 	    onMouseUp : function()

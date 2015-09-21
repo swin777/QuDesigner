@@ -387,19 +387,13 @@ define(["dojo/_base/declare",
 	
 	    onDragEnd: function() {
 	        this.setAlpha(this.originalAlpha);
-	
-	        // Element ist zwar schon an seine Position, das Command muss aber trotzdem
-	        // in dem CommandStack gelegt werden damit das Undo funktioniert.
-	        //
 	        if (this.canvas.getSnapToGrid()) {
 	            var tmpX = this.x / 10;
 	            var tmpY = this.y / 10;
 	            this.x = Math.round(tmpX) * 10;
 	            this.y = Math.round(tmpY) * 10;
 	        }
-//	        if(this.command){
-//	        	return;
-//	        }
+
 	        this.command.setPosition(this.x, this.y);
 	        this.isInDragDrop = false;
 	
