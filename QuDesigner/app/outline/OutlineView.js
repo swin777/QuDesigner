@@ -1,7 +1,7 @@
 define(["dojo/_base/declare",
         "dijit/layout/AccordionContainer",
         "dijit/layout/ContentPane",], function(declare, AccordionContainer, ContentPane){
-	return declare("app.left.OutlineView", AccordionContainer, {
+	return declare("app.outline.OutlineView", AccordionContainer, {
 		contentPane:null,
 		
 		constructor: function() {

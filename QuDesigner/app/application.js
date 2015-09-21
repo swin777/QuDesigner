@@ -5,7 +5,7 @@ define(["dojo/_base/declare",
         "app/top/TopMainView",
         "app/center/DesignerView",
         "app/left/PalleteView",
-        "app/left/OutlineView",
+        "app/outline/OutlineView",
         "app/right/PropertyView",
         "dojo/domReady!"], function(declare, BorderContainer, ContentPane, AshExpandoPane,
         		TopMainView, DesignerView, PalleteView, OutlineView, PropertyView){
