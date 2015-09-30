@@ -54,7 +54,6 @@ define(["dojo/_base/declare",
 			if(quCanvas)
 				this.exportPng(quCanvas);
 			this.outLineDivWidth = $("#outLineDiv").width();
-			console.log(this.outLineDivWidth)
 			this.outLineDivHeight = $("#outLineDiv").height();
 			this.viewWidth = $("#viewDiv").width();
 			this.viewHeight = $("#viewDiv").height();

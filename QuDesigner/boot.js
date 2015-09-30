@@ -1,16 +1,24 @@
-dojoConfig = {
-		baseUrl: 'http://' + window.location.hostname + ':' + window.location.port,
-		packages: [{name: "ashDraw", location: "ashDraw"},
-		           {name: "ashDrawEx", location: "ashDrawEx"},
-		           {name: "app", location: "app"},
-		           {name: "dojo", location: "libs/dojoToolKit/dojo"},
-		           {name: "dijit", location: "libs/dojoToolKit/dijit"},
-		           {name: "dojox", location: "libs/dojoToolKit/dojox"},
-		           {name: 'dbootstrap', location: 'libs/dojoToolKit/dbootstrap'}
-		]
-};
-
 (function(){
+	var baseUrl = "";
+	var arr = location.href.split("/")
+	for(var i=0; i<arr.length-1; i++){ 
+		baseUrl += arr[i] + "/";
+	}
+	baseUrl = baseUrl.substring(0, baseUrl.length-1);
+	window.dojoConfig = {
+			baseUrl: baseUrl,
+			packages: [{name: "ashDraw", location: "ashDraw"},
+			           {name: "ashDrawEx", location: "ashDrawEx"},
+			           {name: "app", location: "app"},
+			           {name: "main", location: "main"},
+			           {name: "dojo", location: "libs/dojoToolKit/dojo"},
+			           {name: "dijit", location: "libs/dojoToolKit/dijit"},
+			           {name: "dojox", location: "libs/dojoToolKit/dojox"},
+			           {name: 'dbootstrap', location: 'libs/dojoToolKit/dbootstrap'}
+			]
+	};
+	
+	
 	$LAB
 	.script(dojoConfig.baseUrl + "/ashDraw/lib/raphael.js")
 	.script(dojoConfig.baseUrl + "/ashDraw/lib/raphael-svg-filter.js")
